@@ -29,7 +29,7 @@ export default function Header() {
         </Link>
         <nav>
           <Link to="/home">Home</Link>
-          <Link to="/toprate">TopRate</Link>
+          <Link to="/toprated">TopRate</Link>
           <Link to="/popular">Popular</Link>
           <Link to="/upcomming">UpCommming</Link>
           <Link to="/nowplaying">NowPlaying</Link>
