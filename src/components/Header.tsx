@@ -1,5 +1,5 @@
-import { useForm, SubmitHandler } from "react-hook-form";
-import { useNavigate, Link } from "react-router-dom";
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { useNavigate, Link } from 'react-router-dom';
 interface IFormInput {
   searchQuery: string;
 }
@@ -17,7 +17,7 @@ export default function Header() {
   return (
     <header>
       <div>
-        <Link to={"/"}>
+        <Link to={'/'}>
           <button>Logo</button>
         </Link>
         <nav>
@@ -25,7 +25,7 @@ export default function Header() {
         </nav>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input placeholder="search..." {...register("searchQuery")} />
+        <input placeholder="search..." {...register('searchQuery')} />
         <button onClick={handleClick}>Search</button>
       </form>
     </header>
