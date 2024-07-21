@@ -1,5 +1,6 @@
+import { useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useParams } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
 import { RiNetflixFill } from 'react-icons/ri';
 
@@ -8,12 +9,18 @@ interface IFormInput {
 }
 
 export default function Header() {
-  const { register, handleSubmit, reset } = useForm<IFormInput>();
+  const { keyword } = useParams();
+  const { register, handleSubmit, setValue } = useForm<IFormInput>({
+    defaultValues: { searchQuery: keyword || '' },
+  });
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    navigate(`/home/${data.searchQuery}`);
-    reset();
+    navigate(`/home/${data.searchQuery.trim()}`);
   };
+  useEffect(() => {
+    setValue('searchQuery', keyword || '');
+  }, [keyword, setValue]);
+
   return (
     <header>
       <div>

@@ -5,8 +5,8 @@ import TopRate from './pages/TopRate';
 import Popular from './pages/Popular';
 import UpCommming from './pages/UpComming';
 import NowPlaying from './pages/NowPlaying';
+import SearchResults from './pages/SearchResults';
 import MovieDetail from './components/MovieDetail';
-
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -14,12 +14,12 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: '/home', element: <Home /> },
-      { path: '/home/:keyword', element: <Home /> },
+      { path: '/home/:keyword', element: <SearchResults /> },
       { path: '/toprate', element: <TopRate /> },
       { path: '/popular', element: <Popular /> },
       { path: '/upcomming', element: <UpCommming /> },
       { path: '/nowplaying', element: <NowPlaying /> },
-      { path: 'movie/:movieId', element: <MovieDetail /> },
+      { path: '/movie/:movieId', element: <MovieDetail /> },
     ],
   },
 ]);
