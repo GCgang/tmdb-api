@@ -13,17 +13,17 @@ export default class Tmdb {
 
   async popular() {
     const response = await this.apiClient.popular();
-    return response.data;
+    return response.data.results;
   }
 
   async upComming() {
     const response = await this.apiClient.upComming();
-    return response.data;
+    return response.data.results;
   }
 
   async NowPlaying() {
     const response = await this.apiClient.NowPlaying();
-    return response.data;
+    return response.data.results;
   }
 
   async movieDetails(movieId: number) {
