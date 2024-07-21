@@ -1,9 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
-import { makeImagePath } from "../utils/makeImagePath";
-import { IMovie, IMovieDetail } from "../api/types";
-import { useTmdbApi } from "../context/TmdbApiContext";
-import { IoIosArrowDropdownCircle } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
+import { useQuery } from '@tanstack/react-query';
+import { makeImagePath } from '../utils/makeImagePath';
+import { IMovie, IMovieDetail } from '../api/types';
+import { useTmdbApi } from '../context/TmdbApiContext';
+import { IoIosArrowDropdownCircle } from 'react-icons/io';
+import { useNavigate } from 'react-router-dom';
 interface IMovieDetailProps {
   movie: IMovie;
 }
@@ -17,16 +17,16 @@ export default function MovieDetail({ movie }: IMovieDetailProps) {
     isLoading,
     error,
   } = useQuery<IMovieDetail>({
-    queryKey: ["movieDetails", id],
+    queryKey: ['movieDetails', id],
     queryFn: () => tmdb.movieDetails(id),
   });
   const handleClicked = (movieId: number) => {
-    navigate(`/movie/${movieId}`);
+    navigate(`/movie/${movieId}`, { state: { movieDetails } });
   };
   return (
     <div>
       <div>
-        <img src={makeImagePath(backdrop_path || "")} alt={title} />
+        <img src={makeImagePath(backdrop_path || '')} alt={title} />
         {isLoading ? (
           <div>Loading...</div>
         ) : error ? (
