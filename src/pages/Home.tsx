@@ -3,10 +3,8 @@ import SearchResults from './SearchResults';
 import { useQuery } from '@tanstack/react-query';
 import { useTmdbApi } from '../context/TmdbApiContext';
 import MovieSlider from '../components/MovieSlider';
-
-interface Backdrop {
-  file_path: string;
-}
+import NotFound from './NotFound';
+import { IMovie } from '../api/types';
 
 export default function Home() {
   const { keyword } = useParams();
@@ -15,26 +13,40 @@ export default function Home() {
     data: topRatedMovies,
     isLoading: isLoadingTopRated,
     error: errorTopRated,
-  } = useQuery({ queryKey: ['topRated'], queryFn: () => tmdb.topRated() });
+  } = useQuery<IMovie[]>({
+    queryKey: ['topRated'],
+    queryFn: () => tmdb.topRated(),
+  });
 
   const {
     data: popularMovies,
     isLoading: isLoadingPopular,
     error: errorPopular,
-  } = useQuery({ queryKey: ['popular'], queryFn: () => tmdb.popular() });
+  } = useQuery<IMovie[]>({
+    queryKey: ['popular'],
+    queryFn: () => tmdb.popular(),
+  });
 
   const {
     data: upCommingMovies,
     isLoading: isLoadingUpComming,
     error: errorUpComming,
-  } = useQuery({ queryKey: ['upComming'], queryFn: () => tmdb.upComming() });
+  } = useQuery<IMovie[]>({
+    queryKey: ['upComming'],
+    queryFn: () => tmdb.upComming(),
+  });
 
   const {
     data: nowPlayingMovies,
     isLoading: isLoadingNowPlaying,
     error: errorNowPlaying,
-  } = useQuery({ queryKey: ['nowPlaying'], queryFn: () => tmdb.NowPlaying() });
+  } = useQuery<IMovie[]>({
+    queryKey: ['nowPlaying'],
+    queryFn: () => tmdb.NowPlaying(),
+  });
 
+  if (errorTopRated || errorPopular || errorUpComming || errorNowPlaying)
+    return <NotFound />;
   return (
     <div>
       {keyword && keyword.length > 0 ? (
@@ -47,10 +59,30 @@ export default function Home() {
                 src={`https://image.tmdb.org/t/p/w1280${topRatedMovies[0].backdrop_path}`}
                 alt={topRatedMovies[0].title}
               />
-              <h1>{topRatedMovies[0].title}</h1>
+              <h3>{topRatedMovies[0].title}</h3>
               <p>{topRatedMovies[0].overview}</p>
             </div>
           )}
+          <MovieSlider
+            title="TOP RATE"
+            isLoading={isLoadingTopRated}
+            movies={topRatedMovies}
+          />
+          <MovieSlider
+            title="POPULAR"
+            isLoading={isLoadingPopular}
+            movies={popularMovies}
+          />
+          <MovieSlider
+            title="UP COMMING"
+            isLoading={isLoadingUpComming}
+            movies={upCommingMovies}
+          />
+          <MovieSlider
+            title="NOW PLAYING"
+            isLoading={isLoadingNowPlaying}
+            movies={nowPlayingMovies}
+          />
         </>
       )}
     </div>
