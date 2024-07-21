@@ -1,4 +1,4 @@
-import TmdbClient from "./tmdbClient";
+import TmdbClient from './tmdbClient';
 
 export default class Tmdb {
   apiClient: TmdbClient;
@@ -36,8 +36,8 @@ export default class Tmdb {
     return response.data;
   }
 
-  async search(query: string) {
+  async search(query: string | undefined) {
     const response = await this.apiClient.search(query);
-    return response.data;
+    return response.data.results;
   }
 }

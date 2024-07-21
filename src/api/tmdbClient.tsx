@@ -47,7 +47,7 @@ export default class TmdbClient {
     return this.httpClient.get(`/movie/${movieId}/images`);
   }
 
-  async search(query: string): Promise<AxiosResponse> {
+  async search(query: string | undefined): Promise<AxiosResponse> {
     return this.httpClient.get('/search/movie', {
       params: { query, language: 'en-US', page: 1 },
     });

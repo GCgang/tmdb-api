@@ -1,11 +1,11 @@
-import { useParams } from "react-router-dom";
-import SearchResults from "./SearchResults";
-import { useQuery } from "@tanstack/react-query";
-import { useTmdbApi } from "../context/TmdbApiContext";
-import MovieSlider from "../components/MovieSlider";
-import NotFound from "./NotFound";
-import { IMovie } from "../api/types";
-import { makeImagePath } from "../utils/makeImagePath";
+import { useParams } from 'react-router-dom';
+import SearchResults from './SearchResults';
+import { useQuery } from '@tanstack/react-query';
+import { useTmdbApi } from '../context/TmdbApiContext';
+import MovieSlider from '../components/MovieSlider';
+import NotFound from './NotFound';
+import { IMovie } from '../api/types';
+import { makeImagePath } from '../utils/makeImagePath';
 
 export default function Home() {
   const { keyword } = useParams();
@@ -15,7 +15,7 @@ export default function Home() {
     isLoading: isLoadingTopRated,
     error: errorTopRated,
   } = useQuery<IMovie[]>({
-    queryKey: ["topRated"],
+    queryKey: ['topRated'],
     queryFn: () => tmdb.topRated(),
   });
 
@@ -24,7 +24,7 @@ export default function Home() {
     isLoading: isLoadingPopular,
     error: errorPopular,
   } = useQuery<IMovie[]>({
-    queryKey: ["popular"],
+    queryKey: ['popular'],
     queryFn: () => tmdb.popular(),
   });
 
@@ -33,7 +33,7 @@ export default function Home() {
     isLoading: isLoadingUpComming,
     error: errorUpComming,
   } = useQuery<IMovie[]>({
-    queryKey: ["upComming"],
+    queryKey: ['upComming'],
     queryFn: () => tmdb.upComming(),
   });
 
@@ -42,7 +42,7 @@ export default function Home() {
     isLoading: isLoadingNowPlaying,
     error: errorNowPlaying,
   } = useQuery<IMovie[]>({
-    queryKey: ["nowPlaying"],
+    queryKey: ['nowPlaying'],
     queryFn: () => tmdb.NowPlaying(),
   });
 
@@ -57,7 +57,7 @@ export default function Home() {
           {topRatedMovies && topRatedMovies.length > 0 && (
             <div>
               <img
-                src={makeImagePath(topRatedMovies[0]?.backdrop_path || "")}
+                src={makeImagePath(topRatedMovies[0]?.backdrop_path || '')}
                 alt={topRatedMovies[0].title}
               />
               <h3>{topRatedMovies[0].title}</h3>
