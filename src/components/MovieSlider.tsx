@@ -1,5 +1,6 @@
-import { IMovie } from '../api/types';
+import { IMovie } from "../api/types";
 
+import MovieDetail from "./MovieDetail";
 interface IMovieSliderProps {
   title: string;
   isLoading: boolean;
@@ -20,12 +21,7 @@ export default function MovieSlider({
       <h3>{title}</h3>
       <div>
         {movies?.map((movie) => (
-          <div key={movie.id}>
-            <img
-              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-              alt={movie.title}
-            />
-          </div>
+          <MovieDetail key={movie.id} movie={movie} />
         ))}
       </div>
     </div>

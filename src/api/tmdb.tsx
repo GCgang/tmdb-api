@@ -1,4 +1,4 @@
-import TmdbClient from './tmdbClient';
+import TmdbClient from "./tmdbClient";
 
 export default class Tmdb {
   apiClient: TmdbClient;
