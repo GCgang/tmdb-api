@@ -31,6 +31,11 @@ export default class Tmdb {
     return response.data;
   }
 
+  async movieImages(movieId: number) {
+    const response = await this.apiClient.movieImages(movieId);
+    return response.data;
+  }
+
   async search(query: string) {
     const response = await this.apiClient.search(query);
     return response.data;

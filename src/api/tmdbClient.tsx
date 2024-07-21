@@ -10,31 +10,46 @@ export default class TmdbClient {
     this.httpClient = axios.create({
       baseURL: BASE_URL,
       headers: { Accept: 'application/json', Authorization: `Bearer ${TOKEN}` },
-      params: { language: 'en-US', page: 1 },
     });
   }
 
   async topRated(): Promise<AxiosResponse> {
-    return this.httpClient.get('/movie/top_rated');
+    return this.httpClient.get('/movie/top_rated', {
+      params: { language: 'en-US', page: 1 },
+    });
   }
 
   async popular(): Promise<AxiosResponse> {
-    return this.httpClient.get('/movie/popular');
+    return this.httpClient.get('/movie/popular', {
+      params: { language: 'en-US', page: 1 },
+    });
   }
 
   async upComming(): Promise<AxiosResponse> {
-    return this.httpClient.get('/movie/upcoming');
+    return this.httpClient.get('/movie/upcoming', {
+      params: { language: 'en-US', page: 1 },
+    });
   }
 
   async NowPlaying(): Promise<AxiosResponse> {
-    return this.httpClient.get('/movie/now_playing');
+    return this.httpClient.get('/movie/now_playing', {
+      params: { language: 'en-US', page: 1 },
+    });
   }
 
   async movieDetails(movieId: number): Promise<AxiosResponse> {
-    return this.httpClient.get(`/movie/${movieId}`);
+    return this.httpClient.get(`/movie/${movieId}`, {
+      params: { language: 'en-US', page: 1 },
+    });
+  }
+
+  async movieImages(movieId: number): Promise<AxiosResponse> {
+    return this.httpClient.get(`/movie/${movieId}/images`);
   }
 
   async search(query: string): Promise<AxiosResponse> {
-    return this.httpClient.get('/search/movie', { params: { query } });
+    return this.httpClient.get('/search/movie', {
+      params: { query, language: 'en-US', page: 1 },
+    });
   }
 }
