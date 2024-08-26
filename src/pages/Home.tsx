@@ -6,6 +6,7 @@ import MovieSlider from '../components/MovieSlider';
 import NotFound from './NotFound';
 import { IMovie } from '../api/types';
 import { makeImagePath } from '../utils/makeImagePath';
+import Banner from '../components/Banner';
 
 export default function Home() {
   const { keyword } = useParams();
@@ -54,33 +55,24 @@ export default function Home() {
         <SearchResults />
       ) : (
         <>
-          {topRatedMovies && topRatedMovies.length > 0 && (
-            <div>
-              <img
-                src={makeImagePath(topRatedMovies[0]?.backdrop_path || '')}
-                alt={topRatedMovies[0].title}
-              />
-              <h3>{topRatedMovies[0].title}</h3>
-              <p>{topRatedMovies[0].overview}</p>
-            </div>
-          )}
+          <Banner isLoading={isLoadingTopRated} movies={topRatedMovies} />
           <MovieSlider
-            title="TOP RATE"
+            title='TOP RATE'
             isLoading={isLoadingTopRated}
             movies={topRatedMovies}
           />
           <MovieSlider
-            title="POPULAR"
+            title='POPULAR'
             isLoading={isLoadingPopular}
             movies={popularMovies}
           />
           <MovieSlider
-            title="UP COMMING"
+            title='UP COMMING'
             isLoading={isLoadingUpComming}
             movies={upCommingMovies}
           />
           <MovieSlider
-            title="NOW PLAYING"
+            title='NOW PLAYING'
             isLoading={isLoadingNowPlaying}
             movies={nowPlayingMovies}
           />
