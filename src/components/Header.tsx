@@ -1,15 +1,19 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate, Link, useParams, useMatch } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
-import { RiNetflixFill } from 'react-icons/ri';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
+import {
+  motion,
+  useAnimation,
+  useMotionValueEvent,
+  useScroll,
+} from 'framer-motion';
 interface IFormInput {
   searchQuery: string;
 }
 
-const HeaderContainer = styled.header`
+const HeaderContainer = styled(motion.header)`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -68,9 +72,34 @@ const Circle = styled(motion.span)`
   background-color: ${(props) => props.theme.red};
 `;
 
-const SearchForm = styled.form``;
-const SearchInput = styled.input``;
-const SearchButton = styled.button``;
+const SearchForm = styled.form`
+  position: relative;
+  color: white;
+  display: flex;
+  align-items: center;
+`;
+
+const SearchInput = styled(motion.input)`
+  transform-origin: right center;
+  position: absolute;
+  right: 0px;
+  padding: 5px 10px;
+  z-index: -1;
+  color: white;
+  font-size: 16px;
+  background-color: transparent;
+  border: 1px solid ${(props) => props.theme.white.lighter};
+  outline: none;
+  width: 240px;
+  height: 36px;
+`;
+
+const SearchButton = styled.button`
+  color: white;
+  background: none;
+  border: none;
+  font-size: 20px;
+`;
 
 const logoVariants = {
   normal: {
@@ -84,7 +113,40 @@ const logoVariants = {
   },
 };
 
+const navVariants = {
+  top: {
+    backgroundColor: 'rgba(0,0,0,0)',
+  },
+  scroll: {
+    backgroundColor: 'rgba(0,0,0,1)',
+  },
+};
+
 export default function Header() {
+  const [searchOpen, setSearchOpen] = useState(false);
+  const searchRef = useRef<HTMLFormElement>(null);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      searchRef.current &&
+      !searchRef.current.contains(event.target as Node)
+    ) {
+      setSearchOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (searchOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [searchOpen]);
+
   const matchRoot = useMatch('/');
   const matchHome = useMatch('/home');
   const homeMatch = matchRoot || matchHome;
@@ -92,20 +154,32 @@ export default function Header() {
   const popularMatch = useMatch('/popular');
   const upcommingMatch = useMatch('/upcomming');
   const nowPlayingMatch = useMatch('/nowplaying');
+  const navAnimation = useAnimation();
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, 'change', (y) => {
+    if (y > 80) {
+      navAnimation.start('scroll');
+    } else {
+      navAnimation.start('top');
+    }
+  });
   const { keyword } = useParams();
   const { register, handleSubmit, setValue } = useForm<IFormInput>({
     defaultValues: { searchQuery: keyword || '' },
   });
+
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     navigate(`/home/${data.searchQuery.trim()}`);
   };
+
   useEffect(() => {
     setValue('searchQuery', keyword || '');
   }, [keyword, setValue]);
 
   return (
-    <HeaderContainer>
+    <HeaderContainer variants={navVariants} animate={navAnimation}>
       <Col>
         <Link to={'/'}>
           <Logo
@@ -139,10 +213,15 @@ export default function Header() {
         </NavBar>
       </Col>
       <Col>
-        <SearchForm onSubmit={handleSubmit(onSubmit)}>
-          <SearchInput placeholder='search...' {...register('searchQuery')} />
+        <SearchForm onSubmit={handleSubmit(onSubmit)} ref={searchRef}>
+          <SearchInput
+            placeholder='search...'
+            {...register('searchQuery')}
+            transition={{ type: 'linear' }}
+            animate={{ scaleX: searchOpen ? 1 : 0 }}
+          />
           <SearchButton>
-            <BsSearch />
+            <BsSearch onClick={() => setSearchOpen((prev) => !prev)} />
           </SearchButton>
         </SearchForm>
       </Col>
