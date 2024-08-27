@@ -7,7 +7,7 @@ interface IBannerProps {
   movies: IMovie[] | undefined;
 }
 
-const BannerContainer = styled.div<{ bgPhoto: string }>`
+const BannerSection = styled.section<{ bgPhoto: string }>`
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -36,9 +36,9 @@ export default function Banner({ isLoading, movies }: IBannerProps) {
     return <div>Loading...</div>;
   }
   return (
-    <BannerContainer bgPhoto={makeImagePath(movieBackDropPath || '')}>
+    <BannerSection bgPhoto={makeImagePath(movieBackDropPath || '')}>
       <Title>{title}</Title>
       <Overview>{overview}</Overview>
-    </BannerContainer>
+    </BannerSection>
   );
 }
