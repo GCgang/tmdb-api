@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { IMovie } from '../api/types';
 
-import MovieDetail from './MovieDetail';
+import MovieCard from './MovieCard';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 interface IMovieSliderProps {
@@ -73,7 +73,7 @@ export default function MovieSlider({
             ?.slice(1)
             .slice(OFFSET * index, OFFSET * index + OFFSET)
             .map((movie) => (
-              <MovieDetail key={movie.id} movie={movie} />
+              <MovieCard key={movie.id} movie={movie} />
             ))}
         </MoviesRow>
       </AnimatePresence>

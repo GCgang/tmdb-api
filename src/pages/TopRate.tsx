@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useTmdbApi } from '../context/TmdbApiContext';
 import { IMovie } from '../api/types';
 import NotFound from './NotFound';
-import MovieDetail from '../components/MovieDetail';
+import MovieCard from '../components/MovieCard';
 
 export default function TopRate() {
   const { tmdb } = useTmdbApi();
@@ -23,7 +23,7 @@ export default function TopRate() {
       ) : (
         <div>
           {topRatedMovies?.map((movie) => (
-            <MovieDetail key={movie.id} movie={movie} />
+            <MovieCard key={movie.id} movie={movie} />
           ))}
         </div>
       )}
