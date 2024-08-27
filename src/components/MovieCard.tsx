@@ -55,7 +55,7 @@ const infoVariants = {
     opacity: 1,
     transition: {
       delay: 0.2,
-      duaration: 0.1,
+      duration: 0.1,
       type: 'tween',
     },
   },
@@ -74,9 +74,11 @@ const ToggleIcon = styled(IoIosArrowDropdownCircle)`
 export default function MovieCard({ movie }: IMovieCardProps) {
   const { id, backdrop_path, title } = movie;
   const navigate = useNavigate();
+
   const handleClicked = (movieId: number) => {
-    navigate(`/movie/${movieId}`);
+    navigate(`/movie/${movieId}`, { state: { movie } });
   };
+
   return (
     <Card
       key={id}

@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 import { IMovie } from '../api/types';
-
 import MovieCard from './MovieCard';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
+import { useMatch } from 'react-router-dom';
+import MovieModal from './MovieModal';
+
 interface IMovieSliderProps {
   title: string;
   isLoading: boolean;
@@ -44,6 +46,8 @@ export default function MovieSlider({
 }: IMovieSliderProps) {
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
+  const modalMatch = useMatch('/movie/:movieId');
+
   const increaseIndex = () => {
     if (movies) {
       if (leaving) return;
@@ -53,30 +57,36 @@ export default function MovieSlider({
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
   };
+
   const toggleLeaving = () => setLeaving((prev) => !prev);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
+
   return (
-    <Slider onClick={increaseIndex}>
-      {title}
-      <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
-        <MoviesRow
-          variants={rowVariants}
-          initial='hidden'
-          animate='visible'
-          exit='exit'
-          transition={{ type: 'tween', duration: 1 }}
-          key={index}
-        >
-          {movies
-            ?.slice(1)
-            .slice(OFFSET * index, OFFSET * index + OFFSET)
-            .map((movie) => (
-              <MovieCard key={movie.id} movie={movie} />
-            ))}
-        </MoviesRow>
-      </AnimatePresence>
-    </Slider>
+    <>
+      <Slider onClick={increaseIndex}>
+        {title}
+        <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+          <MoviesRow
+            variants={rowVariants}
+            initial='hidden'
+            animate='visible'
+            exit='exit'
+            transition={{ type: 'tween', duration: 1 }}
+            key={index}
+          >
+            {movies
+              ?.slice(1)
+              .slice(OFFSET * index, OFFSET * index + OFFSET)
+              .map((movie) => (
+                <MovieCard key={`${movie.id}`} movie={movie} />
+              ))}
+          </MoviesRow>
+        </AnimatePresence>
+      </Slider>
+      {modalMatch ? <MovieModal /> : null}
+    </>
   );
 }
