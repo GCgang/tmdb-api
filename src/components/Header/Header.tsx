@@ -13,11 +13,12 @@ const HeaderContainer = styled(motion.header)`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 80px;
+  z-index: 10;
   position: fixed;
   width: 100%;
   top: 0;
-  background-color: black;
-  font-size: 16px;
+  font-size: 1.2rem;
   padding: 20px 40px;
   color: white;
 `;

@@ -3,12 +3,13 @@ import { IMovie } from '../api/types';
 import { makeImagePath } from '../utils/makeImagePath';
 
 interface IBannerProps {
-  isLoading: boolean;
-  movies: IMovie[] | undefined;
+  movie: IMovie;
 }
 
 const BannerSection = styled.section<{ bgPhoto: string }>`
+  position: relative;
   height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -16,29 +17,45 @@ const BannerSection = styled.section<{ bgPhoto: string }>`
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
     url(${(props) => props.bgPhoto});
   background-size: cover;
+  background-position: center center;
 `;
+
+const BannerInfo = styled.div`
+  overflow: hidden;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  bottom: 0;
+  padding: 0 40px;
+`;
+
 const Title = styled.h2`
-  font-size: 68px;
+  font-size: 4rem;
   margin-bottom: 20px;
 `;
 
 const Overview = styled.p`
-  font-size: 30px;
-  width: 50%;
+  font-size: 1.4rem;
+  width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  line-height: 1.2em;
 `;
 
-export default function Banner({ isLoading, movies }: IBannerProps) {
-  if (!movies) return <div>empty</div>;
-  const movie = movies[0];
+export default function Banner({ movie }: IBannerProps) {
+  if (!movie) return <div>empty</div>;
   const movieBackDropPath = movie?.backdrop_path || '';
   const { title, overview } = movie;
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+
   return (
     <BannerSection bgPhoto={makeImagePath(movieBackDropPath || '')}>
-      <Title>{title}</Title>
-      <Overview>{overview}</Overview>
+      <BannerInfo>
+        <Title>{title}</Title>
+        <Overview>{overview}</Overview>
+      </BannerInfo>
     </BannerSection>
   );
 }
