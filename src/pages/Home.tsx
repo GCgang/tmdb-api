@@ -11,7 +11,7 @@ import styled from 'styled-components';
 const SliderWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 280px;
+  gap: 24rem;
   padding: 0px 40px;
   margin-bottom: 280px;
 `;
@@ -19,14 +19,6 @@ const SliderWrapper = styled.div`
 export default function Home() {
   const { keyword } = useParams();
   const { tmdb } = useTmdbApi();
-  const {
-    data: topRatedMovies,
-    isLoading: isLoadingTopRated,
-    error: errorTopRated,
-  } = useQuery<IMovie[]>({
-    queryKey: ['topRated'],
-    queryFn: () => tmdb.topRated(),
-  });
 
   const {
     data: popularMovies,
@@ -38,14 +30,13 @@ export default function Home() {
   });
 
   const {
-    data: upCommingMovies,
-    isLoading: isLoadingUpComming,
-    error: errorUpComming,
+    data: topRatedMovies,
+    isLoading: isLoadingTopRated,
+    error: errorTopRated,
   } = useQuery<IMovie[]>({
-    queryKey: ['upComming'],
-    queryFn: () => tmdb.upComming(),
+    queryKey: ['topRated'],
+    queryFn: () => tmdb.topRated(),
   });
-
   const {
     data: nowPlayingMovies,
     isLoading: isLoadingNowPlaying,
@@ -54,37 +45,59 @@ export default function Home() {
     queryKey: ['nowPlaying'],
     queryFn: () => tmdb.NowPlaying(),
   });
+  const {
+    data: upCommingMovies,
+    isLoading: isLoadingUpComming,
+    error: errorUpComming,
+  } = useQuery<IMovie[]>({
+    queryKey: ['upComming'],
+    queryFn: () => tmdb.upComming(),
+  });
 
-  if (errorTopRated || errorPopular || errorUpComming || errorNowPlaying)
-    return <NotFound />;
   return (
     <>
       {keyword && keyword.length > 0 ? (
         <SearchResults />
       ) : (
         <>
-          <Banner isLoading={isLoadingTopRated} movies={topRatedMovies} />
+          {errorPopular && <NotFound />}
+          {isLoadingPopular && <div>Loading...</div>}
+          {popularMovies && <Banner movie={popularMovies[0]} />}
           <SliderWrapper>
-            <MovieSlider
-              title='TOP RATE'
-              isLoading={isLoadingTopRated}
-              movies={topRatedMovies}
-            />
-            <MovieSlider
-              title='POPULAR'
-              isLoading={isLoadingPopular}
-              movies={popularMovies}
-            />
-            <MovieSlider
-              title='UP COMMING'
-              isLoading={isLoadingUpComming}
-              movies={upCommingMovies}
-            />
-            <MovieSlider
-              title='NOW PLAYING'
-              isLoading={isLoadingNowPlaying}
-              movies={nowPlayingMovies}
-            />
+            {popularMovies && (
+              <MovieSlider
+                title='TOP 10 시리즈'
+                type='popular'
+                movies={popularMovies.slice(1, 11)}
+              />
+            )}
+            {errorTopRated && <NotFound />}
+            {isLoadingTopRated && <div>Loading...</div>}
+            {topRatedMovies && (
+              <MovieSlider
+                title='최고의 평가'
+                type='topRated'
+                movies={topRatedMovies}
+              />
+            )}
+            {errorNowPlaying && <NotFound />}
+            {isLoadingNowPlaying && <div>Loading...</div>}
+            {nowPlayingMovies && (
+              <MovieSlider
+                title='절찬 상영중'
+                type='nowPlaying'
+                movies={nowPlayingMovies}
+              />
+            )}
+            {errorUpComming && <NotFound />}
+            {isLoadingUpComming && <div>Loading...</div>}
+            {upCommingMovies && (
+              <MovieSlider
+                title='개봉 예정'
+                type='upComming'
+                movies={upCommingMovies}
+              />
+            )}
           </SliderWrapper>
         </>
       )}

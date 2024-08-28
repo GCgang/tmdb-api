@@ -10,12 +10,11 @@ interface IMovieCardProps {
 }
 
 const Card = styled(motion.div)<{ bgPhoto: string }>`
-  background-color: white;
-  background-image: url(${(props) => props.bgPhoto});
-  background-size: cover;
-  background-position: center center;
   cursor: pointer;
-  height: 200px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
   &:first-child {
     transform-origin: center left;
   }
@@ -39,13 +38,19 @@ const movieCardVariants = {
   },
 };
 
+const Image = styled(motion.img)`
+  width: 100%;
+  border-radius: 10px;
+  background-color: white;
+`;
+
 const Info = styled(motion.div)`
   padding: 10px;
   background-color: ${(props) => props.theme.black.lighter};
   opacity: 0;
   position: absolute;
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
   width: 100%;
   bottom: 0;
 `;
@@ -61,18 +66,13 @@ const infoVariants = {
   },
 };
 
-const Title = styled.h4`
-  font-size: 14px;
-  text-align: center;
-`;
-
 const ToggleIcon = styled(IoIosArrowDropdownCircle)`
   color: white;
-  font-size: 16px;
+  font-size: 1.4rem;
 `;
 
 export default function MovieCard({ movie }: IMovieCardProps) {
-  const { id, backdrop_path, title } = movie;
+  const { id, poster_path, title } = movie;
   const navigate = useNavigate();
 
   const handleClicked = (movieId: number) => {
@@ -87,10 +87,10 @@ export default function MovieCard({ movie }: IMovieCardProps) {
       initial='normal'
       variants={movieCardVariants}
       transition={{ type: 'tween' }}
-      bgPhoto={makeImagePath(backdrop_path, 'w500')}
+      bgPhoto={makeImagePath(poster_path, 'w500')}
     >
+      <Image src={makeImagePath(movie.poster_path)} />
       <Info variants={infoVariants}>
-        <Title>{title}</Title>
         <ToggleIcon />
       </Info>
     </Card>

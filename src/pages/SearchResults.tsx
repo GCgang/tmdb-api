@@ -19,12 +19,16 @@ export default function SearchResults() {
   });
   if (error) return <NotFound />;
   return (
-    <>
-      <MovieSlider
-        title="SEARCH RESULTS"
-        isLoading={isLoading}
-        movies={searchMovies}
-      />
-    </>
+    <section>
+      {error && <NotFound />}
+      {isLoading && <div>Loading...</div>}
+      {searchMovies && (
+        <MovieSlider
+          title='SEARCH RESULTS'
+          type='search'
+          movies={searchMovies}
+        />
+      )}
+    </section>
   );
 }

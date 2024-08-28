@@ -8,7 +8,7 @@ interface IBannerProps {
 
 const BannerSection = styled.section<{ bgPhoto: string }>`
   position: relative;
-  height: 100vh;
+  height: 75vh;
   width: 100%;
   display: flex;
   flex-direction: column;
