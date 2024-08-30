@@ -37,6 +37,7 @@ const ModalInfo = styled(motion.div)`
   z-index: 999;
   overflow: auto;
   border-radius: 10px;
+  max-width: 1400px;
 `;
 
 const ModalCover = styled(motion.img)`
