@@ -31,7 +31,7 @@ const movieCardVariants = {
   },
   hover: {
     scale: 1.3,
-    y: -20,
+    y: -80,
     transition: {
       delay: 0.2,
       duration: 0.2,
@@ -86,8 +86,6 @@ export default function MovieCard({ movie, type }: IMovieCardProps) {
       whileHover='hover'
       initial='normal'
       variants={movieCardVariants}
-      transition={{ type: 'tween' }}
-      role='button'
       layoutId={`${type}${id}`}
     >
       <Image src={makeImagePath(poster_path)} alt={title} />

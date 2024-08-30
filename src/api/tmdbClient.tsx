@@ -15,31 +15,31 @@ export default class TmdbClient {
 
   async topRated(): Promise<AxiosResponse> {
     return this.httpClient.get('/movie/top_rated', {
-      params: { language: 'en-US', page: 1 },
+      params: { language: 'ko', page: 1 },
     });
   }
 
   async popular(): Promise<AxiosResponse> {
     return this.httpClient.get('/movie/popular', {
-      params: { language: 'en-US', page: 1 },
+      params: { language: 'ko', page: 1 },
     });
   }
 
   async upComming(): Promise<AxiosResponse> {
     return this.httpClient.get('/movie/upcoming', {
-      params: { language: 'en-US', page: 1 },
+      params: { language: 'ko', page: 1 },
     });
   }
 
   async NowPlaying(): Promise<AxiosResponse> {
     return this.httpClient.get('/movie/now_playing', {
-      params: { language: 'en-US', page: 1 },
+      params: { language: 'ko', page: 1 },
     });
   }
 
   async movieDetails(movieId: number): Promise<AxiosResponse> {
     return this.httpClient.get(`/movie/${movieId}`, {
-      params: { language: 'en-US', page: 1 },
+      params: { language: 'ko', page: 1 },
     });
   }
 
@@ -49,7 +49,7 @@ export default class TmdbClient {
 
   async search(query: string | undefined): Promise<AxiosResponse> {
     return this.httpClient.get('/search/movie', {
-      params: { query, language: 'en-US', page: 1 },
+      params: { query, language: 'ko', page: 1 },
     });
   }
 }

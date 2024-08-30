@@ -15,8 +15,8 @@ interface IMovieSliderProps {
 
 const SliderWrapper = styled.section`
   margin-top: -200px;
-  padding: 0 20px;
-  margin-bottom: 16rem;
+  padding: 0 32px;
+  margin-bottom: 12rem;
 
   .slick-list {
     overflow: visible !important;
@@ -38,9 +38,9 @@ const SliderWrapper = styled.section`
     height: 100%;
     z-index: 99;
     color: #fff;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.3);
     width: auto;
-    padding: 0 10px;
+    padding: 0 16px;
     display: none !important;
   }
 
@@ -50,7 +50,7 @@ const SliderWrapper = styled.section`
 
   .slick-prev:before,
   .slick-next:before {
-    font-size: 30px;
+    font-size: 2rem;
     opacity: 1;
   }
 

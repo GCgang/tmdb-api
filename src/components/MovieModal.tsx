@@ -1,10 +1,12 @@
 import { useParams } from 'react-router-dom';
-import { IMovie } from '../api/types';
+import { IMovie, IMovieDetail } from '../api/types';
 import { makeImagePath } from '../utils/makeImagePath';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { MdClose } from 'react-icons/md';
+import { useQuery } from '@tanstack/react-query';
+import { useTmdbApi } from '../context/TmdbApiContext';
 
 interface IMovieModalProps {
   movie: IMovie;
@@ -17,7 +19,7 @@ const Overlay = styled(motion.div)`
   left: 0;
   width: 100%;
   max-height: 100vh;
-  height: 100vh;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 200;
   display: flex;
@@ -27,110 +29,85 @@ const Overlay = styled(motion.div)`
 `;
 
 const ModalInfo = styled(motion.div)`
-  position: relative;
-  width: 50%;
-  max-height: 100vh;
+  position: absolute;
+  width: 60%;
+  max-height: 96vh;
   background-color: #141414;
   color: #fff;
   z-index: 999;
   overflow: auto;
+  border-radius: 10px;
 `;
 
-const BigMovie = styled(motion.div)`
-  position: absolute;
-  width: 40vw;
-  height: 80vh;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  border-radius: 15px;
-  overflow: hidden;
-  background-color: ${(props) => props.theme.black.lighter};
-`;
-
-const BigCover = styled.div`
+const ModalCover = styled(motion.img)`
   width: 100%;
   background-size: cover;
   background-position: center center;
-  height: 400px;
+  height: 50vh;
+  min-height: 350px;
 `;
 
-const BigTitle = styled.h3`
-  color: ${(props) => props.theme.white.lighter};
-  padding: 20px;
-  font-size: 46px;
-  position: relative;
-  top: -80px;
+const Content = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
 `;
 
-const BigOverview = styled.p`
-  padding: 20px;
-  position: relative;
-  top: -80px;
-  color: ${(props) => props.theme.white.lighter};
+const ModalTitle = styled(motion.h2)`
+  font-size: 2.5rem;
+  margin: 0;
+`;
+const ModalOverView = styled(motion.p)`
+  font-size: 1.5rem;
+  line-height: 1.5;
 `;
 
-const Content = styled.div`
-  padding: 0 50px 50px;
-  margin-top: -100px;
+const ModalButton = styled(motion.button)`
+  color: #ffffff;
+  background-color: #181818;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
 
-  h3 {
-    font-size: 2.5rem;
-    margin: 0;
-  }
-  p {
-    line-height: 1.5;
-  }
-  button {
-    color: #ffffff;
-    background-color: #141414;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    border: 2px solid #fff;
-    border-radius: 20px;
-    font-size: 1.4rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-  }
-  .content {
-    display: flex;
-    @media (max-width: 768px) {
-      flex-direction: column;
-      align-items: center;
-      gap: 30px;
-    }
-    div.img {
-      width: 200px;
-      margin-right: 50px;
-      flex-shrink: 0;
-    }
-    div.info {
-      text-align: left;
-      line-height: 1.7;
-      color: #d2d2d2;
-      span {
-        color: #fff;
-        padding-left: 10px;
-        img {
-          height: 20px;
-        }
-      }
+const InfoContainer = styled(motion.div)`
+  display: flex;
+  margin-top: 0.4rem;
+  gap: 0.4rem;
+  span {
+    &:first-child {
+      opacity: 0.6;
     }
   }
+`;
+
+const InfoItem = styled(motion.span)`
+  font-size: 1.2rem;
 `;
 
 export default function MovieModal({ movie, type }: IMovieModalProps) {
   const navigate = useNavigate();
   const { movieId } = useParams();
-
   const { id, title, release_date, overview, poster_path } = movie;
-  const onOverlayClick = () => navigate('/');
+  const { tmdb } = useTmdbApi();
+  const {
+    isLoading,
+    isError,
+    data: movieDetail,
+  } = useQuery<IMovieDetail>({
+    queryKey: ['detail'],
+    queryFn: () => tmdb.movieDetails(id),
+  });
 
+  const onOverlayClick = () => navigate('/');
   return (
     <AnimatePresence>
       {movieId ? (
@@ -140,28 +117,39 @@ export default function MovieModal({ movie, type }: IMovieModalProps) {
           animate={{ opacity: 1 }}
         >
           <ModalInfo layoutId={`${type}${id}`}>
+            <ModalButton
+              onClick={() => {
+                navigate(-1);
+              }}
+              whileHover={{ scale: 1.2 }}
+              initial={{ scale: 1 }}
+            >
+              <MdClose />
+            </ModalButton>
+            <ModalCover src={makeImagePath(poster_path)} alt={title} />
             <Content>
-              <h3>{title}</h3>
-              <p>{overview}</p>
-              <div>
-                <img
-                  src={makeImagePath(poster_path, 'w500')}
-                  alt={title}
-                  width='100%'
-                />
-              </div>
-              <motion.button
-                onClick={() => {
-                  navigate(-1);
-                }}
-                whileHover={{ scale: 1.2 }}
-                initial={{ scale: 1 }}
-              >
-                <MdClose />
-              </motion.button>
-              <div>
-                <span>{release_date}</span>
-              </div>
+              <ModalTitle>{title}</ModalTitle>
+              <ModalOverView>{overview}</ModalOverView>
+              <InfoContainer>
+                <InfoItem>개봉일:</InfoItem>
+                <InfoItem>{release_date}</InfoItem>
+              </InfoContainer>
+              {isLoading && <p>로딩중입니다</p>}
+              {isError ? <p>잠시후 다시 시도해주세요</p> : null}
+              <InfoContainer>
+                <InfoItem>런타임:</InfoItem>
+                <InfoItem>{movieDetail?.runtime} 분</InfoItem>
+              </InfoContainer>
+              <InfoContainer>
+                <InfoItem>평점:</InfoItem>
+                <InfoItem>{movieDetail?.vote_average} 점</InfoItem>
+              </InfoContainer>
+              <InfoContainer>
+                <InfoItem>장르:</InfoItem>
+                <InfoItem>
+                  {movieDetail?.genres.map((genre) => genre.name).join(', ')}
+                </InfoItem>
+              </InfoContainer>
             </Content>
           </ModalInfo>
         </Overlay>
