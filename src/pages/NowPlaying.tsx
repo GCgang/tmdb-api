@@ -23,7 +23,7 @@ export default function NowPlaying() {
       ) : (
         <div>
           {nowPlayingMovies?.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} />
+            <MovieCard key={movie.id} type='nowplaying' movie={movie} />
           ))}
         </div>
       )}

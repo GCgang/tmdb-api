@@ -9,11 +9,8 @@ import Banner from '../components/Banner';
 import styled from 'styled-components';
 
 const SliderWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 24rem;
-  padding: 0px 40px;
-  margin-bottom: 280px;
+  background: black;
+  padding-bottom: 200px;
 `;
 
 export default function Home() {

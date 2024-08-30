@@ -7,9 +7,7 @@ interface IBannerProps {
 }
 
 const BannerSection = styled.section<{ bgPhoto: string }>`
-  position: relative;
-  height: 75vh;
-  width: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -17,7 +15,6 @@ const BannerSection = styled.section<{ bgPhoto: string }>`
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
     url(${(props) => props.bgPhoto});
   background-size: cover;
-  background-position: center center;
 `;
 
 const BannerInfo = styled.div`
@@ -36,7 +33,7 @@ const Title = styled.h2`
 
 const Overview = styled.p`
   font-size: 1.4rem;
-  width: 60%;
+  width: 50%;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -52,10 +49,8 @@ export default function Banner({ movie }: IBannerProps) {
 
   return (
     <BannerSection bgPhoto={makeImagePath(movieBackDropPath || '')}>
-      <BannerInfo>
-        <Title>{title}</Title>
-        <Overview>{overview}</Overview>
-      </BannerInfo>
+      <Title>{title}</Title>
+      <Overview>{overview}</Overview>
     </BannerSection>
   );
 }

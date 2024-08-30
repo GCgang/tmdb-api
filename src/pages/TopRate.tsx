@@ -23,7 +23,7 @@ export default function TopRate() {
       ) : (
         <div>
           {topRatedMovies?.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} />
+            <MovieCard key={movie.id} type='toprate' movie={movie} />
           ))}
         </div>
       )}

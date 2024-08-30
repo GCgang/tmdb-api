@@ -7,14 +7,16 @@ import { motion } from 'framer-motion';
 
 interface IMovieCardProps {
   movie: IMovie;
+  type: string;
 }
 
-const Card = styled(motion.div)<{ bgPhoto: string }>`
+const Card = styled(motion.div)`
   cursor: pointer;
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: end;
+  margin: 1rem;
   &:first-child {
     transform-origin: center left;
   }
@@ -29,7 +31,7 @@ const movieCardVariants = {
   },
   hover: {
     scale: 1.3,
-    y: -40,
+    y: -20,
     transition: {
       delay: 0.2,
       duration: 0.2,
@@ -61,7 +63,6 @@ const infoVariants = {
     transition: {
       delay: 0.2,
       duration: 0.1,
-      type: 'tween',
     },
   },
 };
@@ -71,25 +72,25 @@ const ToggleIcon = styled(IoIosArrowDropdownCircle)`
   font-size: 1.4rem;
 `;
 
-export default function MovieCard({ movie }: IMovieCardProps) {
+export default function MovieCard({ movie, type }: IMovieCardProps) {
   const { id, poster_path, title } = movie;
   const navigate = useNavigate();
 
   const handleClicked = (movieId: number) => {
-    navigate(`/movie/${movieId}`, { state: { movie } });
+    navigate(`/${type}/${movieId}`, { state: { movie } });
   };
 
   return (
     <Card
-      key={id}
       onClick={() => handleClicked(id)}
       whileHover='hover'
       initial='normal'
       variants={movieCardVariants}
       transition={{ type: 'tween' }}
-      bgPhoto={makeImagePath(poster_path, 'w500')}
+      role='button'
+      layoutId={`${type}${id}`}
     >
-      <Image src={makeImagePath(movie.poster_path)} />
+      <Image src={makeImagePath(poster_path)} alt={title} />
       <Info variants={infoVariants}>
         <ToggleIcon />
       </Info>

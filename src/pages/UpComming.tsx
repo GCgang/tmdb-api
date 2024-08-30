@@ -23,7 +23,7 @@ export default function UpComming() {
       ) : (
         <div>
           {upCommingMovies?.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} />
+            <MovieCard key={movie.id} type='upcomming' movie={movie} />
           ))}
         </div>
       )}

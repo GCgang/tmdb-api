@@ -23,7 +23,7 @@ export default function Popular() {
       ) : (
         <div>
           {popularMovies?.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} />
+            <MovieCard key={movie.id} type='popular' movie={movie} />
           ))}
         </div>
       )}
