@@ -1,7 +1,6 @@
 import { makeImagePath } from '../utils/makeImagePath';
 import { IMovie } from '../api/types';
 import { IoIosArrowDropdownCircle } from 'react-icons/io';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 

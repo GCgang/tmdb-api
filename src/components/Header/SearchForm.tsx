@@ -31,7 +31,7 @@ const SearchInput = styled(motion.input)`
   height: 36px;
 `;
 
-const SearchButton = styled.button`
+const SearchButton = styled.button.attrs({ type: 'button' })`
   color: white;
   background: none;
   border: none;
@@ -48,7 +48,7 @@ export default function SearchForm() {
   });
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    navigate(`/home/${data.searchQuery.trim()}`);
+    navigate(`/search/${data.searchQuery.trim()}`);
   };
 
   const handleClickOutside = (event: MouseEvent) => {
