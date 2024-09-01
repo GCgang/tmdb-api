@@ -40,4 +40,9 @@ export default class Tmdb {
     const response = await this.apiClient.search(query);
     return response.data.results;
   }
+
+  async similar(movieId: number) {
+    const response = await this.apiClient.similar(movieId);
+    return response.data.results;
+  }
 }

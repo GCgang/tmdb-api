@@ -52,4 +52,10 @@ export default class TmdbClient {
       params: { query, language: 'ko', page: 1 },
     });
   }
+
+  async similar(movieId: number): Promise<AxiosResponse> {
+    return this.httpClient.get(`/movie/${movieId}/similar`, {
+      params: { language: 'ko', page: 1 },
+    });
+  }
 }
