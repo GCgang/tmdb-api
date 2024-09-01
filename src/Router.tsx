@@ -1,24 +1,17 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { Navigate, createBrowserRouter } from 'react-router-dom';
 import App from './App';
 import Home from './pages/Home';
-import TopRate from './pages/TopRate';
-import Popular from './pages/Popular';
-import UpCommming from './pages/UpComming';
-import NowPlaying from './pages/NowPlaying';
-import SearchResults from './pages/SearchResults';
+import Search from './pages/Search';
+import MyWishList from './pages/MyWishList';
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     children: [
-      { index: true, element: <Home /> },
+      { index: true, element: <Navigate to='/home' /> },
       { path: '/home', element: <Home /> },
-      { path: '/:category/:movieId', element: <Home /> },
-      { path: '/home/:keyword', element: <SearchResults /> },
-      { path: '/toprated', element: <TopRate /> },
-      { path: '/popular', element: <Popular /> },
-      { path: '/upcomming', element: <UpCommming /> },
-      { path: '/nowplaying', element: <NowPlaying /> },
+      { path: '/mywishlist', element: <MyWishList /> },
+      { path: '/search/:keyword', element: <Search /> },
     ],
   },
 ]);
