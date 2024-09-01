@@ -33,30 +33,16 @@ const Circle = styled(motion.span)`
 `;
 
 export default function Navigation() {
-  const matchRoot = useMatch('/');
   const matchHome = useMatch('/home');
-  const homeMatch = matchRoot || matchHome;
-  const topRateMatch = useMatch('/toprated');
-  const popularMatch = useMatch('/popular');
-  const upcommingMatch = useMatch('/upcomming');
-  const nowPlayingMatch = useMatch('/nowplaying');
+  const matchWish = useMatch('/mywishlist');
 
   return (
     <NavBar>
       <NavItem to='/home'>
-        Home {homeMatch && <Circle layoutId='circle' />}
+        Home {matchHome && <Circle layoutId='circle' />}
       </NavItem>
-      <NavItem to='/toprated'>
-        TopRate {topRateMatch && <Circle layoutId='circle' />}
-      </NavItem>
-      <NavItem to='/popular'>
-        Popular {popularMatch && <Circle layoutId='circle' />}
-      </NavItem>
-      <NavItem to='/upcomming'>
-        UpCommming {upcommingMatch && <Circle layoutId='circle' />}
-      </NavItem>
-      <NavItem to='/nowplaying'>
-        NowPlaying {nowPlayingMatch && <Circle layoutId='circle' />}
+      <NavItem to='/mywishlist'>
+        MyWishList {matchWish && <Circle layoutId='circle' />}
       </NavItem>
     </NavBar>
   );
