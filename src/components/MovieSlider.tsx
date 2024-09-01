@@ -4,8 +4,7 @@ import { IMovie } from '../api/types';
 import MovieCard from './MovieCard';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { useParams } from 'react-router-dom';
-import MovieModal from './MovieModal';
+import { useNavigate } from 'react-router-dom';
 
 interface IMovieSliderProps {
   title: string;
@@ -105,21 +104,25 @@ export default function MovieSlider({
       },
     ],
   };
-  const { category, movieId } = useParams();
+  const navigate = useNavigate();
 
-  const clickedMovie = movies.find((movie: IMovie) => {
-    return type === category && `${movie.id}` === movieId;
-  });
+  const openModal = (movieId: number) => {
+    navigate(`?type=${type ? `${type}` : ''}&id=${movieId}`);
+  };
 
   return (
     <SliderWrapper>
       <Title>{title}</Title>
       <Slider {...settings}>
         {movies.map((movie) => (
-          <MovieCard key={`${movie.id}`} type={type} movie={movie} />
+          <MovieCard
+            key={`${movie.id}`}
+            movie={movie}
+            type={type}
+            openModal={openModal}
+          />
         ))}
       </Slider>
-      {clickedMovie && <MovieModal movie={clickedMovie} type={type} />}
     </SliderWrapper>
   );
 }

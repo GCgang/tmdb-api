@@ -1,5 +1,5 @@
-import { useParams } from 'react-router-dom';
-import { IMovie, IMovieDetail } from '../api/types';
+import { useLocation } from 'react-router-dom';
+import { IMovieDetail } from '../api/types';
 import { makeImagePath } from '../utils/makeImagePath';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -7,11 +7,9 @@ import styled from 'styled-components';
 import { MdClose } from 'react-icons/md';
 import { useQuery } from '@tanstack/react-query';
 import { useTmdbApi } from '../context/TmdbApiContext';
-
-interface IMovieModalProps {
-  movie: IMovie;
-  type: string;
-}
+import { useRecoilState } from 'recoil';
+import { useEffect } from 'react';
+import { modalState } from '../atom';
 
 const Overlay = styled(motion.div)`
   position: fixed;
@@ -94,49 +92,64 @@ const InfoItem = styled(motion.span)`
   font-size: 1.2rem;
 `;
 
-export default function MovieModal({ movie, type }: IMovieModalProps) {
+export default function MovieModal() {
   const navigate = useNavigate();
-  const { movieId } = useParams();
-  const { id, title, release_date, overview, poster_path } = movie;
+  const location = useLocation();
   const { tmdb } = useTmdbApi();
+
+  const queryParams = new URLSearchParams(location.search);
+  const type = queryParams.get('type');
+  const id = queryParams.get('id');
+
+  const [isModalOpen, setIsModalOpen] = useRecoilState(modalState);
+
+  useEffect(() => {
+    setIsModalOpen(id ? true : false);
+  }, [location]);
+
   const {
     isLoading,
     isError,
     data: movieDetail,
   } = useQuery<IMovieDetail>({
-    queryKey: ['detail'],
-    queryFn: () => tmdb.movieDetails(id),
+    queryKey: ['detail', id],
+    queryFn: () => tmdb.movieDetails(Number(id)),
   });
 
-  const onOverlayClick = () => navigate('/');
+  const onOverlayClick = () => navigate(-1);
+  function closeModal(e: React.MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation();
+    navigate(-1);
+  }
   return (
     <AnimatePresence>
-      {movieId ? (
+      {isModalOpen ? (
         <Overlay
           onClick={onOverlayClick}
           exit={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
+          {isLoading && <p>로딩중입니다</p>}
+          {isError ? <p>잠시후 다시 시도해주세요</p> : null}
           <ModalInfo layoutId={`${type}${id}`}>
             <ModalButton
-              onClick={() => {
-                navigate(-1);
-              }}
+              onClick={closeModal}
               whileHover={{ scale: 1.2 }}
               initial={{ scale: 1 }}
             >
               <MdClose />
             </ModalButton>
-            <ModalCover src={makeImagePath(poster_path)} alt={title} />
+            <ModalCover
+              src={makeImagePath(movieDetail?.poster_path!)}
+              alt={movieDetail?.title}
+            />
             <Content>
-              <ModalTitle>{title}</ModalTitle>
-              <ModalOverView>{overview}</ModalOverView>
+              <ModalTitle>{movieDetail?.title}</ModalTitle>
+              <ModalOverView>{movieDetail?.overview}</ModalOverView>
               <InfoContainer>
                 <InfoItem>개봉일:</InfoItem>
-                <InfoItem>{release_date}</InfoItem>
+                <InfoItem>{movieDetail?.release_date}</InfoItem>
               </InfoContainer>
-              {isLoading && <p>로딩중입니다</p>}
-              {isError ? <p>잠시후 다시 시도해주세요</p> : null}
               <InfoContainer>
                 <InfoItem>런타임:</InfoItem>
                 <InfoItem>{movieDetail?.runtime} 분</InfoItem>

@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import SearchResults from './SearchResults';
+import SearchResults from './Search';
 import { useQuery } from '@tanstack/react-query';
 import { useTmdbApi } from '../context/TmdbApiContext';
 import MovieSlider from '../components/MovieSlider';
@@ -73,7 +73,7 @@ export default function Home() {
             {topRatedMovies && (
               <MovieSlider
                 title='최고의 평가'
-                type='topRated'
+                type='toprated'
                 movies={topRatedMovies}
               />
             )}
@@ -82,7 +82,7 @@ export default function Home() {
             {nowPlayingMovies && (
               <MovieSlider
                 title='절찬 상영중'
-                type='nowPlaying'
+                type='nowplaying'
                 movies={nowPlayingMovies}
               />
             )}
@@ -91,7 +91,7 @@ export default function Home() {
             {upCommingMovies && (
               <MovieSlider
                 title='개봉 예정'
-                type='upComming'
+                type='upcomming'
                 movies={upCommingMovies}
               />
             )}

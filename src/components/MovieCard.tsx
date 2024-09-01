@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 interface IMovieCardProps {
   movie: IMovie;
   type: string;
+  openModal: (id: number) => void;
 }
 
 const Card = styled(motion.div)`
@@ -72,17 +73,12 @@ const ToggleIcon = styled(IoIosArrowDropdownCircle)`
   font-size: 1.4rem;
 `;
 
-export default function MovieCard({ movie, type }: IMovieCardProps) {
+export default function MovieCard({ movie, type, openModal }: IMovieCardProps) {
   const { id, poster_path, title } = movie;
-  const navigate = useNavigate();
-
-  const handleClicked = (movieId: number) => {
-    navigate(`/${type}/${movieId}`, { state: { movie } });
-  };
 
   return (
     <Card
-      onClick={() => handleClicked(id)}
+      onClick={() => openModal(id)}
       whileHover='hover'
       initial='normal'
       variants={movieCardVariants}
