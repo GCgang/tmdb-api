@@ -1,8 +1,10 @@
 import { makeImagePath } from '../utils/makeImagePath';
 import { IMovie } from '../api/types';
-import { IoIosArrowDropdownCircle } from 'react-icons/io';
+import { IoIosArrowDropdownCircle, IoIosAddCircle } from 'react-icons/io';
+import { FaCheckCircle } from 'react-icons/fa';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import useMyWishList from '../hooks/useMyWishList';
 
 interface IMovieCardProps {
   movie: IMovie;
@@ -15,7 +17,6 @@ const Card = styled(motion.div)`
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: end;
   margin: 1rem;
   &:first-child {
     transform-origin: center left;
@@ -52,7 +53,7 @@ const Info = styled(motion.div)`
   opacity: 0;
   position: absolute;
   display: flex;
-  justify-content: end;
+  flex-direction: column;
   width: 100%;
   bottom: 0;
 `;
@@ -67,14 +68,27 @@ const infoVariants = {
   },
 };
 
-const ToggleIcon = styled(IoIosArrowDropdownCircle)`
+const Icons = styled.div`
+  display: flex;
+  justify-content: space-between;
   color: white;
-  font-size: 1.4rem;
+  font-size: 2rem;
+  cursor: pointer;
+  & > *:hover {
+    transform: scale(1.2);
+    transition: transform 0.2s easi-in-out;
+  }
+`;
+const ReleseDate = styled.p`
+  margin: 0.2rem;
+`;
+const VoteAverage = styled.p`
+  margin: 0.2rem;
 `;
 
 export default function MovieCard({ movie, type, openModal }: IMovieCardProps) {
   const { id, poster_path, title } = movie;
-
+  const { isNewItem, addItem, removeItem } = useMyWishList();
   return (
     <Card
       onClick={() => openModal(id)}
@@ -85,7 +99,16 @@ export default function MovieCard({ movie, type, openModal }: IMovieCardProps) {
     >
       <Image src={makeImagePath(poster_path)} alt={title} />
       <Info variants={infoVariants}>
-        <ToggleIcon />
+        <Icons>
+          {isNewItem(id) ? (
+            <IoIosAddCircle onClick={() => addItem(id)} />
+          ) : (
+            <FaCheckCircle onClick={() => removeItem(id)} />
+          )}
+          <IoIosArrowDropdownCircle />
+        </Icons>
+        <ReleseDate>개봉일: {movie.release_date}</ReleseDate>
+        <VoteAverage>평점: {movie.vote_average}</VoteAverage>
       </Info>
     </Card>
   );

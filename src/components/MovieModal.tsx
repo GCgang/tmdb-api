@@ -10,6 +10,9 @@ import { useTmdbApi } from '../context/TmdbApiContext';
 import { useRecoilState } from 'recoil';
 import { useEffect } from 'react';
 import { modalState } from '../atom';
+import useMyWishList from '../hooks/useMyWishList';
+import { IoIosAddCircle } from 'react-icons/io';
+import { FaCheckCircle } from 'react-icons/fa';
 
 const Overlay = styled(motion.div)`
   position: fixed;
@@ -92,6 +95,16 @@ const InfoItem = styled(motion.span)`
   font-size: 1.2rem;
 `;
 
+const Icons = styled.div`
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  & > *:hover {
+    transform: scale(1.2);
+    transition: transform 0.2s easi-in-out;
+  }
+`;
+
 export default function MovieModal() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -101,6 +114,7 @@ export default function MovieModal() {
   const type = queryParams.get('type');
   const id = queryParams.get('id');
 
+  const { isNewItem, addItem, removeItem } = useMyWishList();
   const [isModalOpen, setIsModalOpen] = useRecoilState(modalState);
 
   useEffect(() => {
@@ -144,6 +158,13 @@ export default function MovieModal() {
               alt={movieDetail?.title}
             />
             <Content>
+              <Icons>
+                {isNewItem(Number(id)) ? (
+                  <IoIosAddCircle onClick={() => addItem(Number(id))} />
+                ) : (
+                  <FaCheckCircle onClick={() => removeItem(Number(id))} />
+                )}
+              </Icons>
               <ModalTitle>{movieDetail?.title}</ModalTitle>
               <ModalOverView>{movieDetail?.overview}</ModalOverView>
               <InfoContainer>

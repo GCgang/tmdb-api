@@ -1,23 +1,16 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import MovieCard from '../components/MovieCard';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { myMovieWishList } from '../atom';
 import { useQueries } from '@tanstack/react-query';
 import { useTmdbApi } from '../context/TmdbApiContext';
 import { IMovie } from '../api/types';
-import { useEffect } from 'react';
 
 export default function MyWishList() {
   const navigate = useNavigate();
-  const [myWishList, setMyWishList] = useRecoilState(myMovieWishList);
-
-  // const myWishList = useRecoilValue(myMovieWishList);
+  const myWishList = useRecoilValue(myMovieWishList);
   const { tmdb } = useTmdbApi();
-
-  useEffect(() => {
-    setMyWishList([550, 500]);
-  }, [setMyWishList]);
 
   const openModal = (movieId: number) => {
     navigate(`?type=mywishlist&id=${movieId}`);
@@ -31,9 +24,11 @@ export default function MyWishList() {
       };
     }),
   });
+
   const myMovies = myMovieQuery
     .map((query) => query.data as IMovie)
     .filter(Boolean);
+
   if (myMovieQuery.some((query) => query.isLoading)) {
     return <p>Loading...</p>;
   }
