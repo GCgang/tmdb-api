@@ -2,29 +2,6 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
-const LogoSVG = styled(motion.svg)`
-  margin-right: 50px;
-  width: 95px;
-  height: 25px;
-  fill: ${(props) => props.theme.red};
-  path {
-    stroke-width: 6px;
-    stroke: white;
-  }
-`;
-
-const logoVariants = {
-  normal: {
-    fillOpacity: 1,
-  },
-  active: {
-    fillOpacity: [0, 1, 0],
-    transition: {
-      repeat: Infinity,
-    },
-  },
-};
-
 export default function Logo() {
   return (
     <>
@@ -44,3 +21,25 @@ export default function Logo() {
     </>
   );
 }
+
+const LogoSVG = styled(motion.svg)`
+  width: 96px;
+  height: 24px;
+  fill: ${(props) => props.theme.red};
+  path {
+    stroke-width: 4px;
+    stroke: white;
+  }
+`;
+
+const logoVariants = {
+  normal: {
+    fillOpacity: 1,
+  },
+  active: {
+    fillOpacity: [0, 1, 0],
+    transition: {
+      repeat: Infinity,
+    },
+  },
+};

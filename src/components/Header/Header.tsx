@@ -9,34 +9,6 @@ import Logo from './Logo';
 import Navigation from './Navigation';
 import SearchForm from './SearchForm';
 
-const HeaderContainer = styled(motion.header)`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 80px;
-  z-index: 10;
-  position: fixed;
-  width: 100%;
-  top: 0;
-  font-size: 1.2rem;
-  padding: 20px 40px;
-  color: white;
-`;
-
-const Col = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const headerVariants = {
-  top: {
-    backgroundColor: 'rgba(0,0,0,0)',
-  },
-  scroll: {
-    backgroundColor: 'rgba(0,0,0,1)',
-  },
-};
-
 export default function Header() {
   const headerAnimation = useAnimation();
   const { scrollY } = useScroll();
@@ -61,3 +33,37 @@ export default function Header() {
     </HeaderContainer>
   );
 }
+
+const HeaderContainer = styled(motion.header)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  height: 80px;
+  z-index: 1;
+  width: 100%;
+  top: 0;
+  padding: 0 60px;
+
+  @media (max-width: 1024px) {
+    padding: 0 40px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0 20px;
+  }
+`;
+
+const headerVariants = {
+  top: {
+    backgroundColor: 'rgba(0,0,0,0)',
+  },
+  scroll: {
+    backgroundColor: 'rgba(0,0,0,1)',
+  },
+};
+
+const Col = styled.div`
+  display: flex;
+  align-items: center;
+`;
