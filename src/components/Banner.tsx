@@ -1,38 +1,70 @@
 import styled from 'styled-components';
 import { IMovie } from '../api/types';
 import { makeImagePath } from '../utils/makeImagePath';
+import { IoIosInformationCircleOutline } from 'react-icons/io';
 
 interface IBannerProps {
   movie: IMovie;
 }
 
-const BannerSection = styled.section<{ bgPhoto: string }>`
-  height: 100vh;
+export default function Banner({ movie }: IBannerProps) {
+  if (!movie) return <div>empty</div>;
+  const movieBackDropPath = movie?.backdrop_path || '';
+  const moviePosterPath = movie?.poster_path || '';
+  const { title, overview } = movie;
+
+  return (
+    <BannerSection
+      bgPhoto={makeImagePath(movieBackDropPath)}
+      bgPoster={makeImagePath(moviePosterPath)}
+    >
+      <Title>{title}</Title>
+      <Overview>{overview}</Overview>
+      <MoreButton>
+        <IoIosInformationCircleOutline />
+        <span>상세 정보</span>
+      </MoreButton>
+    </BannerSection>
+  );
+}
+
+const BannerSection = styled.section<{ bgPhoto: string; bgPoster: string }>`
+  height: 56.25vw;
+  width: 100%;
+  z-index: 0;
+  padding: 0 60px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 60px;
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
     url(${(props) => props.bgPhoto});
   background-size: cover;
-`;
 
-const BannerInfo = styled.div`
-  overflow: hidden;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  bottom: 0;
-  padding: 0 40px;
+  @media (max-width: 1024px) {
+    height: 80vw;
+    padding: 0 40px;
+  }
+
+  @media (max-width: 480px) {
+    height: 140vw;
+    padding: 0 20px;
+    align-items: center;
+    background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
+      url(${(props) => props.bgPoster});
+  }
 `;
 
 const Title = styled.h2`
-  font-size: 4rem;
+  font-size: 3rem;
   margin-bottom: 20px;
+
+  @media (max-width: 1024px) {
+    font-size: 2rem;
+  }
 `;
 
 const Overview = styled.p`
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   width: 50%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -40,17 +72,49 @@ const Overview = styled.p`
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   line-height: 1.2em;
+
+  @media (max-width: 1024px) {
+    font-size: 1rem;
+  }
+
+  @media (max-width: 480px) {
+    -webkit-line-clamp: 3;
+    font-size: 0.8rem;
+  }
 `;
 
-export default function Banner({ movie }: IBannerProps) {
-  if (!movie) return <div>empty</div>;
-  const movieBackDropPath = movie?.backdrop_path || '';
-  const { title, overview } = movie;
+const MoreButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: fit-content;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: white;
+  background-color: rgba(92, 88, 88, 0.9);
+  span {
+    font-size: 1.2rem;
+  }
+  transition: all 0.3s ease-in-out;
+  @media (hover: hover) {
+    &:hover {
+      background-color: rgba(92, 88, 88, 0.6);
+    }
+  }
 
-  return (
-    <BannerSection bgPhoto={makeImagePath(movieBackDropPath || '')}>
-      <Title>{title}</Title>
-      <Overview>{overview}</Overview>
-    </BannerSection>
-  );
-}
+  @media (max-width: 1024px) {
+    font-size: 1.4rem;
+    span {
+      font-size: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.2rem;
+    span {
+      font-size: 0.8rem;
+    }
+  }
+`;
