@@ -12,7 +12,7 @@ function App() {
         <Outlet />
         <MovieModal />
       </TmdbProvider>
-      <Footer /> 
+      <Footer />
     </>
   );
 }

@@ -37,6 +37,7 @@ export default function MyWishList() {
   }
   return (
     <Wrapper>
+      <Title>내가 찜한 리스트</Title>
       <MovieList>
         {myMovies.map((movie) => (
           <MovieCard
@@ -51,8 +52,8 @@ export default function MyWishList() {
   );
 }
 
-const Wrapper = styled.div`
-  padding: 60px;
+const Wrapper = styled.section`
+  padding: 40px;
   display: flex;
   flex-direction: column;
 `;
@@ -60,8 +61,12 @@ const Wrapper = styled.div`
 const MovieList = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  column-gap: 20px;
-  row-gap: 40px;
+  grid-template-columns: repeat(6, 1fr);
   position: relative;
+`;
+
+const Title = styled.h1`
+  margin-top: 4rem;
+  margin-bottom: 8rem;
+  font-size: 2rem;
 `;

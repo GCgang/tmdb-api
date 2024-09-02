@@ -41,13 +41,24 @@ const movieCardVariants = {
   },
 };
 
-const Image = styled(motion.img)`
+const Thumbnail = styled(motion.div)`
+  position: relative;
   width: 100%;
-  border-radius: 10px;
-  background-color: white;
+  padding-top: 56.25%;
+`;
+
+const Image = styled(motion.img)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-position: center center;
 `;
 
 const Info = styled(motion.div)`
+  display: none;
   padding: 10px;
   background-color: ${(props) => props.theme.black.lighter};
   opacity: 0;
@@ -59,7 +70,12 @@ const Info = styled(motion.div)`
 `;
 
 const infoVariants = {
+  normal: {
+    display: 'none',
+    opacity: 0,
+  },
   hover: {
+    display: 'block',
     opacity: 1,
     transition: {
       delay: 0.2,
@@ -97,8 +113,15 @@ export default function MovieCard({ movie, type, openModal }: IMovieCardProps) {
       variants={movieCardVariants}
       layoutId={`${type}${id}`}
     >
-      <Image src={makeImagePath(poster_path)} alt={title} />
-      <Info variants={infoVariants}>
+      <Thumbnail>
+        <Image src={makeImagePath(poster_path)} alt={title} />
+      </Thumbnail>
+      <Info
+        initial='normal'
+        animate='normal'
+        whileHover='hover'
+        variants={infoVariants}
+      >
         <Icons>
           {isNewItem(id) ? (
             <IoIosAddCircle onClick={() => addItem(id)} />

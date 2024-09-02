@@ -41,7 +41,7 @@ export default class Tmdb {
     return response.data.results;
   }
 
-  async similar(movieId: number) {
+  async similarMovies(movieId: number) {
     const response = await this.apiClient.similar(movieId);
     return response.data.results;
   }

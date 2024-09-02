@@ -1,14 +1,14 @@
 import { useLocation } from 'react-router-dom';
-import { IMovieDetail } from '../api/types';
+import { IMovie, IMovieDetail } from '../api/types';
 import { makeImagePath } from '../utils/makeImagePath';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { MdClose } from 'react-icons/md';
 import { useQuery } from '@tanstack/react-query';
 import { useTmdbApi } from '../context/TmdbApiContext';
 import { useRecoilState } from 'recoil';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { modalState } from '../atom';
 import useMyWishList from '../hooks/useMyWishList';
 import { IoIosAddCircle } from 'react-icons/io';
@@ -31,8 +31,8 @@ const Overlay = styled(motion.div)`
 
 const ModalInfo = styled(motion.div)`
   position: absolute;
-  width: 60%;
-  max-height: 96vh;
+  width: 90%;
+  max-height: 90vh;
   background-color: #141414;
   color: #fff;
   z-index: 999;
@@ -105,10 +105,16 @@ const Icons = styled.div`
   }
 `;
 
+const Title = styled.h1`
+  margin-bottom: 4rem;
+  font-size: 2rem;
+`;
+
 export default function MovieModal() {
   const navigate = useNavigate();
   const location = useLocation();
   const { tmdb } = useTmdbApi();
+  const [index, setIndex] = useState(6);
 
   const queryParams = new URLSearchParams(location.search);
   const type = queryParams.get('type');
@@ -122,29 +128,40 @@ export default function MovieModal() {
   }, [location]);
 
   const {
-    isLoading,
-    isError,
+    isLoading: isLoadingDetail,
+    isError: isErrorDetail,
     data: movieDetail,
   } = useQuery<IMovieDetail>({
     queryKey: ['detail', id],
     queryFn: () => tmdb.movieDetails(Number(id)),
   });
+  console.log(movieDetail);
 
+  const {
+    isLoading: isLoadingSimilar,
+    isError: isErrorSimilar,
+    data: similarMovies,
+  } = useQuery<IMovie[]>({
+    queryKey: ['similar', id],
+    queryFn: () => tmdb.similarMovies(Number(id)),
+  });
+
+  console.log(similarMovies);
   const onOverlayClick = () => navigate(-1);
   function closeModal(e: React.MouseEvent<HTMLButtonElement>) {
     e.stopPropagation();
     navigate(-1);
   }
   return (
-    <AnimatePresence>
+    <>
       {isModalOpen ? (
         <Overlay
           onClick={onOverlayClick}
           exit={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
-          {isLoading && <p>로딩중입니다</p>}
-          {isError ? <p>잠시후 다시 시도해주세요</p> : null}
+          {isLoadingDetail && <p>로딩중입니다</p>}
+          {isErrorDetail ? <p>잠시후 다시 시도해주세요</p> : null}
           <ModalInfo layoutId={`${type}${id}`}>
             <ModalButton
               onClick={closeModal}
@@ -160,9 +177,19 @@ export default function MovieModal() {
             <Content>
               <Icons>
                 {isNewItem(Number(id)) ? (
-                  <IoIosAddCircle onClick={() => addItem(Number(id))} />
+                  <IoIosAddCircle
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addItem(Number(id));
+                    }}
+                  />
                 ) : (
-                  <FaCheckCircle onClick={() => removeItem(Number(id))} />
+                  <FaCheckCircle
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeItem(Number(id));
+                    }}
+                  />
                 )}
               </Icons>
               <ModalTitle>{movieDetail?.title}</ModalTitle>
@@ -185,10 +212,21 @@ export default function MovieModal() {
                   {movieDetail?.genres.map((genre) => genre.name).join(', ')}
                 </InfoItem>
               </InfoContainer>
+              {isLoadingSimilar && <p>로딩중입니다</p>}
+              {isErrorSimilar ? <p>잠시후 다시 시도해주세요</p> : null}
+              <Title>비슷한 콘텐츠</Title>
+              {similarMovies?.slice(0, index).map((similarMovie) => (
+                <div>{similarMovie.title}</div>
+              ))}
+              {index > similarMovies?.length! ? (
+                <div>더큼</div>
+              ) : (
+                <div>작음</div>
+              )}
             </Content>
           </ModalInfo>
         </Overlay>
       ) : null}
-    </AnimatePresence>
+    </>
   );
 }
