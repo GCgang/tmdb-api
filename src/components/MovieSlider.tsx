@@ -12,62 +12,6 @@ interface IMovieSliderProps {
   type: string;
 }
 
-const SliderWrapper = styled.section`
-  margin-top: -200px;
-  padding: 0 32px;
-  margin-bottom: 12rem;
-
-  .slick-list {
-    overflow: visible !important;
-  }
-
-  .slick-slider:hover .slick-arrow {
-    display: flex !important;
-  }
-
-  .slider_title {
-    font-size: 2rem;
-    position: relative;
-    z-index: 1;
-    color: white;
-  }
-
-  .slick-arrow {
-    align-items: center;
-    height: 100%;
-    z-index: 99;
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0.3);
-    width: auto;
-    padding: 0 16px;
-    display: none !important;
-  }
-
-  .slick-arrow:hover {
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-
-  .slick-prev:before,
-  .slick-next:before {
-    font-size: 2rem;
-    opacity: 1;
-  }
-
-  .slick-prev {
-    left: -50px;
-  }
-
-  .slick-next {
-    right: -50px;
-  }
-`;
-
-const Title = styled.h2`
-  font-size: 1.6rem;
-  margin-bottom: 1rem;
-  color: white;
-`;
-
 export default function MovieSlider({
   title,
   movies,
@@ -126,3 +70,82 @@ export default function MovieSlider({
     </SliderWrapper>
   );
 }
+
+const Title = styled.h2`
+  font-size: 1.4rem;
+
+  @media (max-width: 1024px) {
+    font-size: 1rem;
+  }
+`;
+
+const SliderWrapper = styled.section`
+  width: 100%;
+  padding: 0 60px;
+  position: relative;
+  margin: 3vw 0;
+
+  .slick-list {
+    overflow: visible !important;
+  }
+
+  .slick-slider:hover .slick-arrow {
+    display: flex !important;
+  }
+
+  .slick-arrow {
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 60px;
+    z-index: 99;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: none !important;
+  }
+
+  .slick-arrow:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .slick-prev {
+    left: -60px;
+  }
+
+  .slick-next {
+    right: -60px;
+  }
+
+  @media (max-width: 1024px) {
+    padding: 0 40px;
+
+    .slick-arrow {
+      width: 40px;
+    }
+
+    .slick-prev {
+      left: -40px;
+    }
+
+    .slick-next {
+      right: -40px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 0 20px;
+
+    .slick-arrow {
+      width: 20px;
+    }
+
+    .slick-prev {
+      left: -20px;
+    }
+
+    .slick-next {
+      right: -20px;
+    }
+  }
+`;
