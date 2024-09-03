@@ -13,6 +13,7 @@ import { modalState } from '../atom';
 import useMyWishList from '../hooks/useMyWishList';
 import { IoIosAddCircle } from 'react-icons/io';
 import { FaCheckCircle } from 'react-icons/fa';
+import MovieCard from './MovieCard';
 
 const Overlay = styled(motion.div)`
   position: fixed;
@@ -134,8 +135,8 @@ export default function MovieModal() {
   } = useQuery<IMovieDetail>({
     queryKey: ['detail', id],
     queryFn: () => tmdb.movieDetails(Number(id)),
+    enabled: !!id,
   });
-  console.log(movieDetail);
 
   const {
     isLoading: isLoadingSimilar,
@@ -144,14 +145,19 @@ export default function MovieModal() {
   } = useQuery<IMovie[]>({
     queryKey: ['similar', id],
     queryFn: () => tmdb.similarMovies(Number(id)),
+    enabled: !!id,
   });
 
-  console.log(similarMovies);
   const onOverlayClick = () => navigate(-1);
   function closeModal(e: React.MouseEvent<HTMLButtonElement>) {
     e.stopPropagation();
     navigate(-1);
   }
+
+  const openModal = (movieId: number) => {
+    navigate(`?type=similar&id=${movieId}`);
+  };
+
   return (
     <>
       {isModalOpen ? (
@@ -215,14 +221,40 @@ export default function MovieModal() {
               {isLoadingSimilar && <p>로딩중입니다</p>}
               {isErrorSimilar ? <p>잠시후 다시 시도해주세요</p> : null}
               <Title>비슷한 콘텐츠</Title>
-              {similarMovies?.slice(0, index).map((similarMovie) => (
-                <div>{similarMovie.title}</div>
-              ))}
-              {index > similarMovies?.length! ? (
-                <div>더큼</div>
-              ) : (
-                <div>작음</div>
-              )}
+              <SimilarContents>
+                {similarMovies?.slice(0, index).map((similarMovie) => (
+                  <div key={similarMovie?.id}>
+                    <SimilarContent
+                      bgPoster={makeImagePath(similarMovie?.poster_path)}
+                    ></SimilarContent>
+                    <Info>
+                      <p>{similarMovie?.release_date}</p>
+                      <Icons>
+                        {isNewItem(Number(similarMovie?.id)) ? (
+                          <IoIosAddCircle
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              addItem(Number(similarMovie?.id));
+                            }}
+                          />
+                        ) : (
+                          <FaCheckCircle
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              removeItem(Number(similarMovie?.id));
+                            }}
+                          />
+                        )}
+                      </Icons>
+                    </Info>
+                  </div>
+                ))}
+                {index > similarMovies?.length! ? (
+                  <div>더큼</div>
+                ) : (
+                  <div>작음</div>
+                )}
+              </SimilarContents>
             </Content>
           </ModalInfo>
         </Overlay>
@@ -230,3 +262,39 @@ export default function MovieModal() {
     </>
   );
 }
+
+const SimilarContents = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 20px;
+  row-gap: 40px;
+  position: relative;
+`;
+
+const SimilarContent = styled.div<{ bgPoster: string }>`
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  background-image: url(${(props) => props.bgPoster});
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+`;
+
+const Info = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 10px;
+  padding-top: 10px;
+  h1 {
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    margin: 5px 0;
+  }
+`;

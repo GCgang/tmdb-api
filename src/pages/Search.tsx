@@ -23,7 +23,7 @@ export default function Search() {
   });
 
   const openModal = (movieId: number) => {
-    navigate(`?type=mywishlist&id=${movieId}`);
+    navigate(`?type=search&id=${movieId}`);
   };
 
   return (
@@ -39,7 +39,7 @@ export default function Search() {
             <MovieCard
               key={`${movie.id}`}
               movie={movie}
-              type={'mywishlist'}
+              type={'search'}
               openModal={openModal}
             />
           ))}
