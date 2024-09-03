@@ -82,11 +82,16 @@ const Title = styled.h2`
 const SliderWrapper = styled.section`
   width: 100%;
   padding: 0 60px;
+  top: -20vw;
+  margin: 8vw 0;
   position: relative;
-  margin: 3vw 0;
 
   .slick-list {
     overflow: visible !important;
+  }
+
+  .slick-slider {
+    z-index: 1;
   }
 
   .slick-slider:hover .slick-arrow {
