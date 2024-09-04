@@ -8,10 +8,14 @@ import {
 import Logo from './Logo';
 import Navigation from './Navigation';
 import SearchForm from './SearchForm';
+import { BiMenu, BiX } from 'react-icons/bi';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Header() {
   const headerAnimation = useAnimation();
   const { scrollY } = useScroll();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useMotionValueEvent(scrollY, 'change', (y) => {
     if (y > 80) {
@@ -21,15 +25,34 @@ export default function Header() {
     }
   });
 
+  const toggleMenu = () => {
+    setMenuOpen((prev) => !prev);
+  };
+
   return (
     <HeaderContainer variants={headerVariants} animate={headerAnimation}>
       <Col>
         <Logo />
-        <Navigation />
+        <NavigationWrapper>
+          <Navigation />
+        </NavigationWrapper>
       </Col>
       <Col>
         <SearchForm />
+        <MobileMenuButton onClick={toggleMenu}>
+          {menuOpen ? <BiX /> : <BiMenu />}
+        </MobileMenuButton>
       </Col>
+      {menuOpen && (
+        <MobileMenu>
+          <MobileNavItem onClick={toggleMenu}>
+            <Link to='/home'>Home</Link>
+          </MobileNavItem>
+          <MobileNavItem onClick={toggleMenu}>
+            <Link to='/mywishlist'>MyWishList</Link>
+          </MobileNavItem>
+        </MobileMenu>
+      )}
     </HeaderContainer>
   );
 }
@@ -66,4 +89,43 @@ const headerVariants = {
 const Col = styled.div`
   display: flex;
   align-items: center;
+`;
+
+const NavigationWrapper = styled.div`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const MobileMenuButton = styled.button`
+  display: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: white;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+`;
+
+const MobileMenu = styled.div`
+  position: absolute;
+  top: 60px;
+  right: 40px;
+  background-color: rgba(0, 0, 0, 0.9);
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  z-index: 1000;
+`;
+
+const MobileNavItem = styled(motion.div)`
+  color: white;
+  font-size: 1.4rem;
+  cursor: pointer;
+  &:hover {
+    color: ${(props) => props.theme.red};
+  }
 `;
