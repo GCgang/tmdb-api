@@ -25,6 +25,14 @@ export default function MovieModal() {
     setIsModalOpen(id ? true : false);
   }, [location]);
 
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [isModalOpen]);
+
   const closeModal = () => navigate(-1);
 
   return (
