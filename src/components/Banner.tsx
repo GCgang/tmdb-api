@@ -2,16 +2,21 @@ import styled from 'styled-components';
 import { IMovie } from '../api/types';
 import { makeImagePath } from '../utils/makeImagePath';
 import { IoIosInformationCircleOutline } from 'react-icons/io';
+import { useNavigate } from 'react-router-dom';
 
 interface IBannerProps {
   movie: IMovie;
 }
 
 export default function Banner({ movie }: IBannerProps) {
-  if (!movie) return <div>empty</div>;
   const movieBackDropPath = movie?.backdrop_path || '';
   const moviePosterPath = movie?.poster_path || '';
-  const { title, overview } = movie;
+  const { id, title, overview } = movie;
+  const navigate = useNavigate();
+
+  const openModal = (id: number) => {
+    navigate(`?type=popular&id=${id}`);
+  };
 
   return (
     <BannerSection
@@ -20,7 +25,7 @@ export default function Banner({ movie }: IBannerProps) {
     >
       <Title>{title}</Title>
       <Overview>{overview}</Overview>
-      <MoreButton>
+      <MoreButton onClick={() => openModal(id)}>
         <IoIosInformationCircleOutline />
         <span>상세 정보</span>
       </MoreButton>

@@ -36,14 +36,14 @@ export default function MovieModal() {
           animate={{ opacity: 1 }}
         >
           <Modal layoutId={`${type}${id}`} onClick={(e) => e.stopPropagation()}>
-            <CloseButton
-              onClick={closeModal}
-              whileHover={{ scale: 1.2 }}
-              initial={{ scale: 1 }}
-            >
-              <MdClose />
-            </CloseButton>
             <ModalInfo>
+              <CloseButton
+                onClick={closeModal}
+                whileHover={{ scale: 1.2 }}
+                initial={{ scale: 1 }}
+              >
+                <MdClose />
+              </CloseButton>
               <ModalDetails id={id} />
               <ModalContents id={id} />
             </ModalInfo>
@@ -70,7 +70,7 @@ const Overlay = styled(motion.div)`
 `;
 
 const Modal = styled(motion.div)`
-  position: absolute;
+  position: relative;
   width: 90%;
   max-height: 90vh;
   background-color: #141414;
@@ -91,8 +91,8 @@ const CloseButton = styled(motion.button)`
   color: #ffffff;
   background-color: #181818;
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 10px;
+  right: 10px;
   width: 40px;
   height: 40px;
   border-radius: 20px;

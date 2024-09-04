@@ -88,4 +88,8 @@ export default function Home() {
   );
 }
 
-const SliderWrapper = styled.div``;
+const SliderWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+`;

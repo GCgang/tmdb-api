@@ -26,9 +26,9 @@ export default function ModalDetails({ id }: { id: number }) {
       />
       <TitleBar>
         <ModalTitle>{movieDetails?.title}</ModalTitle>
-        <ButtonIcon>
+        <WishButton>
           <WishListButton id={id} />
-        </ButtonIcon>
+        </WishButton>
       </TitleBar>
       <ModalOverView>{movieDetails?.overview}</ModalOverView>
       <InfoSection>
@@ -60,6 +60,36 @@ const TitleBar = styled.div`
   align-items: center;
 `;
 
+const ModalTitle = styled.h2`
+  font-size: 2rem;
+
+  @media (max-width: 1024px) {
+    font-size: 1.6rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.2rem;
+  }
+`;
+
+const WishButton = styled.div`
+  font-size: 2rem;
+  cursor: pointer;
+
+  & > *:hover {
+    transform: scale(1.2);
+    transition: transform 0.2s easi-in-out;
+  }
+
+  @media (max-width: 1024px) {
+    font-size: 1.6rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.2rem;
+  }
+`;
+
 const ModalCover = styled.img`
   width: 100%;
   background-size: cover;
@@ -69,13 +99,18 @@ const ModalCover = styled.img`
   margin-bottom: 1rem;
 `;
 
-const ModalTitle = styled.h2`
-  font-size: 2rem;
-`;
 const ModalOverView = styled.p`
   font-size: 1.2rem;
   line-height: 1.2;
   margin-bottom: 1rem;
+
+  @media (max-width: 1024px) {
+    font-size: 1rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
+  }
 `;
 
 const InfoSection = styled.div`
@@ -94,13 +129,8 @@ const InfoContainer = styled.div`
 `;
 const InfoItem = styled.span`
   font-size: 1.2rem;
-`;
 
-const ButtonIcon = styled.div`
-  font-size: 2rem;
-  cursor: pointer;
-  & > *:hover {
-    transform: scale(1.2);
-    transition: transform 0.2s easi-in-out;
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
   }
 `;

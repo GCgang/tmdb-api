@@ -59,6 +59,14 @@ export default function ModalContents({ id }: { id: number }) {
 const Title = styled.h1`
   font-size: 2rem;
   margin-bottom: 2rem;
+
+  @media (max-width: 1024px) {
+    font-size: 1.6rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.2rem;
+  }
 `;
 
 const SimilarContents = styled.div`
@@ -68,6 +76,10 @@ const SimilarContents = styled.div`
   column-gap: 20px;
   row-gap: 40px;
   position: relative;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const SimilarContent = styled.div``;
@@ -94,6 +106,10 @@ const Info = styled.div`
 
 const ReleaseDate = styled.p`
   font-size: 1rem;
+
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
+  }
 `;
 
 const MoreButton = styled(motion.button)`
@@ -117,6 +133,7 @@ const MoreButton = styled(motion.button)`
   :hover {
     color: white;
   }
+
   svg {
     font-size: 24px;
   }
@@ -129,7 +146,11 @@ const WishButton = styled.div`
     transform: scale(1.2);
     transition: transform 0.2s easi-in-out;
   }
+  @media (max-width: 480px) {
+    font-size: 1.2rem;
+  }
 `;
+
 const Footer = styled.div`
   margin-bottom: 40px;
 `;

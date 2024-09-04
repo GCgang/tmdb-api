@@ -82,8 +82,7 @@ const Title = styled.h2`
 const SliderWrapper = styled.section`
   width: 100%;
   padding: 0 60px;
-  top: -20vw;
-  margin: 8vw 0;
+  top: -16vw;
   position: relative;
 
   .slick-list {
@@ -140,7 +139,7 @@ const SliderWrapper = styled.section`
 
   @media (max-width: 480px) {
     padding: 0 20px;
-
+    overflow-x: hidden;
     .slick-arrow {
       width: 20px;
     }

@@ -40,7 +40,7 @@ const HeaderContainer = styled(motion.header)`
   align-items: center;
   position: fixed;
   height: 80px;
-  z-index: 1;
+  z-index: 1000;
   width: 100%;
   top: 0;
   padding: 0 60px;
