@@ -36,7 +36,7 @@ export default function Footer() {
 const Wrapper = styled.footer`
   width: 100%;
   padding: 60px;
-
+  margin-top: 100px;
   @media (max-width: 1024px) {
     padding: 0 40px;
   }
