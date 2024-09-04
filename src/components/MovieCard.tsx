@@ -1,10 +1,8 @@
 import { makeImagePath } from '../utils/makeImagePath';
 import { IMovie } from '../api/types';
-import { IoIosArrowDropdownCircle, IoIosAddCircle } from 'react-icons/io';
-import { FaCheckCircle } from 'react-icons/fa';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import useMyWishList from '../hooks/useMyWishList';
+import WishListButton from './WishListButton';
 
 interface IMovieCardProps {
   movie: IMovie;
@@ -14,7 +12,6 @@ interface IMovieCardProps {
 
 export default function MovieCard({ movie, type, openModal }: IMovieCardProps) {
   const { id, backdrop_path, title } = movie;
-  const { isNewItem, addItem, removeItem } = useMyWishList();
   return (
     <Card>
       <Thumbnail
@@ -26,20 +23,12 @@ export default function MovieCard({ movie, type, openModal }: IMovieCardProps) {
         layoutId={`${type}${id}`}
       >
         <Info variants={infoVariants}>
-          <Title>{title}</Title>
-          <Icons>
-            {isNewItem(id) ? (
-              <IoIosAddCircle
-                onClick={(e) => {
-                  addItem(id);
-                  e.stopPropagation();
-                }}
-              />
-            ) : (
-              <FaCheckCircle onClick={() => removeItem(id)} />
-            )}
-            <IoIosArrowDropdownCircle />
-          </Icons>
+          <TitleBar>
+            <Title>{title}</Title>
+            <WishButton>
+              <WishListButton id={id} />
+            </WishButton>
+          </TitleBar>
           <ReleseDate>개봉일: {movie.release_date}</ReleseDate>
           <VoteAverage>평점: {movie.vote_average}</VoteAverage>
         </Info>
@@ -70,6 +59,18 @@ const cardVariants = {
   },
 };
 
+const Thumbnail = styled(motion.div)<{ bgPhoto: string }>`
+  cursor: pointer;
+  width: 100%;
+  padding-top: 56.25%;
+  background-image: url(${({ bgPhoto }) => bgPhoto});
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+`;
+
 const Info = styled(motion.div)`
   display: none;
   width: 100%;
@@ -88,18 +89,6 @@ const Info = styled(motion.div)`
   }
 `;
 
-const Thumbnail = styled(motion.div)<{ bgPhoto: string }>`
-  cursor: pointer;
-  width: 100%;
-  padding-top: 56.25%;
-  background-image: url(${({ bgPhoto }) => bgPhoto});
-  background-size: contain;
-  background-repeat: no-repeat;
-  position: relative;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-`;
-
 const infoVariants = {
   hover: {
     display: 'block',
@@ -110,7 +99,26 @@ const infoVariants = {
   },
 };
 
-const Icons = styled(motion.div)`
+const TitleBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const Title = styled(motion.div)`
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+
+  @media (max-width: 1024px) {
+    font-size: 1rem;
+  }
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
+  }
+`;
+
+const WishButton = styled(motion.div)`
   display: flex;
   justify-content: space-between;
   font-size: 1.6rem;
@@ -131,19 +139,6 @@ const Icons = styled(motion.div)`
 
   @media (max-width: 480px) {
     font-size: 1rem;
-  }
-`;
-
-const Title = styled(motion.div)`
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin-bottom: 5px;
-
-  @media (max-width: 1024px) {
-    font-size: 1rem;
-  }
-  @media (max-width: 480px) {
-    font-size: 0.8rem;
   }
 `;
 
