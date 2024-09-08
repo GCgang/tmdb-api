@@ -1,11 +1,10 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTmdbApi } from '../context/TmdbApiContext';
-import { useQuery } from '@tanstack/react-query';
 import { IMovie } from '../api/types';
-import MovieSlider from '../components/MovieSlider';
 import NotFound from './NotFound';
 import styled from 'styled-components';
 import MovieCard from '../components/MovieCard';
+import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
 
 export default function Search() {
   const navigate = useNavigate();
@@ -14,13 +13,15 @@ export default function Search() {
 
   const {
     data: searchMovies,
+    lastElementRef,
     isLoading,
     error,
-  } = useQuery<IMovie[]>({
-    queryKey: ['search', keyword],
-    queryFn: () => tmdb.search(keyword),
-    enabled: !!keyword,
-  });
+    isFetchingNextPage,
+  } = useInfiniteScroll<IMovie>(
+    ['search', keyword],
+    ({ pageParam = 1 }) => tmdb.search(keyword!, pageParam as number),
+    !!keyword
+  );
 
   const openModal = (movieId: number) => {
     navigate(`?type=search&id=${movieId}`);
@@ -31,57 +32,45 @@ export default function Search() {
       {error && <NotFound />}
       {isLoading && <div>Loading...</div>}
       <Title>
-        "{`${keyword}`}" 검색 결과(<span>{searchMovies?.length}</span>)
+        "{keyword}" 검색 결과 (
+        <span>
+          {searchMovies?.pages?.reduce(
+            (total, page) => total + page.length,
+            0
+          ) || 0}
+        </span>
+        )
       </Title>
       <MovieList>
-        {searchMovies &&
-          searchMovies.map((movie) => (
-            <MovieCard
-              key={`${movie.id}`}
-              movie={movie}
-              type={'search'}
-              openModal={openModal}
-            />
-          ))}
+        {searchMovies?.pages.map((page, pageIndex) =>
+          page.map((movie: IMovie, movieIndex) => {
+            const isLastMovie =
+              searchMovies.pages.length - 1 === pageIndex &&
+              page.length - 1 === movieIndex;
+            return (
+              <div ref={isLastMovie ? lastElementRef : null} key={movie.id}>
+                <MovieCard movie={movie} type='search' openModal={openModal} />
+              </div>
+            );
+          })
+        )}
       </MovieList>
+      {isFetchingNextPage && <div>Loading more movies...</div>}
     </Wrapper>
   );
 }
+
 const Wrapper = styled.section`
   padding: 0 60px;
-
-  @media (max-width: 1024px) {
-    padding: 0 40px;
-  }
-
-  @media (max-width: 480px) {
-    padding: 0 20px;
-  }
   display: flex;
   flex-direction: column;
 `;
 
 const MovieList = styled.div`
-  width: 100%;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   column-gap: 0.2vw;
   row-gap: 40px;
-  position: relative;
-
-  @media (max-width: 1600px) {
-    grid-template-columns: repeat(5, 1fr);
-  }
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  @media (max-width: 480px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
 `;
 
 const Title = styled.h1`

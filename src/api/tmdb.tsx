@@ -36,8 +36,8 @@ export default class Tmdb {
     return response.data;
   }
 
-  async search(query: string | undefined) {
-    const response = await this.apiClient.search(query);
+  async search(query: string | undefined, page: number) {
+    const response = await this.apiClient.search(query, page);
     return response.data.results;
   }
 
