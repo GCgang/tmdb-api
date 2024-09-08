@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { makeImagePath } from '../../utils/makeImagePath';
 import { IMovieDetail } from '../../api/types';
 import WishListButton from '../WishListButton';
+import Spinner from '../Spinner';
 
 export default function ModalDetails({ id }: { id: number }) {
   const { tmdb } = useTmdbApi();
@@ -18,6 +19,19 @@ export default function ModalDetails({ id }: { id: number }) {
     enabled: !!id,
   });
 
+  if (isLoading) {
+    return (
+      <Container>
+        <Spinner />
+      </Container>
+    );
+  }
+  if (isError)
+    return (
+      <Container>
+        <ErrorMessage>영화를 불러오는 중 오류가 발생했습니다.</ErrorMessage>
+      </Container>
+    );
   return (
     <>
       <ModalCover
@@ -133,4 +147,20 @@ const InfoItem = styled.span`
   @media (max-width: 480px) {
     font-size: 0.8rem;
   }
+`;
+
+const Container = styled.div`
+  width: 100%;
+  height: 50vh;
+  min-height: 350px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ErrorMessage = styled.div`
+  color: ${(props) => props.theme.red};
+  text-align: center;
+  font-size: 1.5rem;
 `;

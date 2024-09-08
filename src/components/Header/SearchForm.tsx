@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { BsSearch } from 'react-icons/bs';
+import { IoMdClose } from 'react-icons/io';
 
 interface IFormInput {
   searchQuery: string;
@@ -19,6 +20,7 @@ export default function SearchForm() {
   });
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    setSearchOpen((prev) => !prev);
     navigate(`/search/${data.searchQuery.trim()}`);
   };
 
@@ -55,14 +57,24 @@ export default function SearchForm() {
         transition={{ type: 'linear' }}
         animate={{ scaleX: searchOpen ? 1 : 0 }}
       />
-      <SearchButton type='button'>
-        <BsSearch
-          onClick={() => {
-            setSearchOpen((prev) => !prev);
-            setFocus('searchQuery');
-          }}
-        />
-      </SearchButton>
+      <Button type='button'>
+        {!searchOpen && (
+          <BsSearch
+            onClick={() => {
+              setSearchOpen((prev) => !prev);
+              setFocus('searchQuery');
+            }}
+          />
+        )}
+        {searchOpen && (
+          <IoMdClose
+            onClick={() => {
+              setValue('searchQuery', '');
+              setSearchOpen((prev) => !prev);
+            }}
+          />
+        )}
+      </Button>
     </Form>
   );
 }
@@ -86,9 +98,19 @@ const SearchInput = styled(motion.input)`
   outline: none;
   width: 240px;
   height: 36px;
+  background-color: RGB(24, 26, 24);
+
+  @media (max-width: 480px) {
+    width: 200px;
+  }
 `;
 
-const SearchButton = styled.button`
+const Button = styled.button`
+  color: white;
+  font-size: 20px;
+`;
+
+const CloseButton = styled.button`
   color: white;
   font-size: 20px;
 `;

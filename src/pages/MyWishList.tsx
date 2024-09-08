@@ -6,13 +6,14 @@ import { myMovieWishList } from '../atom';
 import { useQueries } from '@tanstack/react-query';
 import { useTmdbApi } from '../context/TmdbApiContext';
 import { IMovie } from '../api/types';
+import SkeletonMovieList from '../components/SkeletonLoader/SkeletonMovieList';
 
 export default function MyWishList() {
   const navigate = useNavigate();
   const myWishList = useRecoilValue(myMovieWishList);
   const { tmdb } = useTmdbApi();
 
-  const myMovieQuery = useQueries<IMovie[]>({
+  const myMovieQueries = useQueries<IMovie[]>({
     queries: myWishList.map((movieId: number) => {
       return {
         queryKey: ['myMovies', String(movieId)],
@@ -21,7 +22,9 @@ export default function MyWishList() {
     }),
   });
 
-  const myMovies = myMovieQuery
+  const isLoading = myMovieQueries.some((query) => query.isLoading);
+  const isError = myMovieQueries.some((query) => query.isError);
+  const myMovies = myMovieQueries
     .map((query) => query.data as IMovie)
     .filter(Boolean);
 
@@ -29,25 +32,25 @@ export default function MyWishList() {
     navigate(`?type=mywishlist&id=${movieId}`);
   };
 
-  if (myMovieQuery.some((query) => query.isLoading)) {
-    return <p>Loading...</p>;
-  }
-  if (myMovieQuery.some((query) => query.isError)) {
-    return <p>Failed to load some movies</p>;
-  }
   return (
     <Wrapper>
       <Title>내가 찜한 리스트</Title>
-      <MovieList>
-        {myMovies.map((movie) => (
-          <MovieCard
-            key={`${movie.id}`}
-            movie={movie}
-            type={'mywishlist'}
-            openModal={openModal}
-          />
-        ))}
-      </MovieList>
+      {isLoading ? (
+        <SkeletonMovieList />
+      ) : isError ? (
+        <ErrorMessage>영화를 불러오는 중 오류가 발생했습니다.</ErrorMessage>
+      ) : (
+        <MovieList>
+          {myMovies.map((movie) => (
+            <MovieCard
+              key={`${movie.id}`}
+              movie={movie}
+              type={'mywishlist'}
+              openModal={openModal}
+            />
+          ))}
+        </MovieList>
+      )}
     </Wrapper>
   );
 }
@@ -93,4 +96,10 @@ const Title = styled.h1`
   margin-top: 8rem;
   margin-bottom: 8rem;
   font-size: 2rem;
+`;
+
+const ErrorMessage = styled.div`
+  color: ${(props) => props.theme.red};
+  text-align: center;
+  font-size: 1.5rem;
 `;

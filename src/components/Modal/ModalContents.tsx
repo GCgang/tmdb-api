@@ -7,6 +7,7 @@ import { IMovie } from '../../api/types';
 import WishListButton from '../WishListButton';
 import { MdExpandMore } from 'react-icons/md';
 import { motion } from 'framer-motion';
+import SkeletonContents from '../SkeletonLoader/SkeletonContents';
 
 const OFFSET = 6;
 
@@ -28,6 +29,14 @@ export default function ModalContents({ id }: { id: number }) {
     e.stopPropagation();
     setIndex((prev) => prev + OFFSET);
   };
+
+  if (isLoading) return <SkeletonContents />;
+  if (isError) {
+    <Title>비슷한 콘텐츠</Title>;
+    <Container>
+      <ErrorMessage>영화를 불러오는 중 오류가 발생했습니다.</ErrorMessage>
+    </Container>;
+  }
   return (
     <>
       <Title>비슷한 콘텐츠</Title>
@@ -138,6 +147,7 @@ const MoreButton = styled(motion.button)`
     font-size: 24px;
   }
 `;
+
 const WishButton = styled.div`
   color: white;
   font-size: 1.4rem;
@@ -153,4 +163,20 @@ const WishButton = styled.div`
 
 const Footer = styled.div`
   margin-bottom: 40px;
+`;
+
+const Container = styled.div`
+  width: 100%;
+  height: 40vh;
+  min-height: 350px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ErrorMessage = styled.div`
+  color: ${(props) => props.theme.red};
+  text-align: center;
+  font-size: 1.5rem;
 `;

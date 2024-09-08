@@ -3,17 +3,19 @@ import { IMovie } from '../api/types';
 import { makeImagePath } from '../utils/makeImagePath';
 import { IoIosInformationCircleOutline } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
+import SkeletonBanner from '../components/SkeletonLoader/SkeletonBanner'; // 스켈레톤 추가
 
 interface IBannerProps {
-  movie: IMovie;
+  movie: IMovie | null;
+  isLoading: boolean;
+  isError: any;
 }
 
-export default function Banner({ movie }: IBannerProps) {
+export default function Banner({ movie, isLoading, isError }: IBannerProps) {
   const movieBackDropPath = movie?.backdrop_path || '';
   const moviePosterPath = movie?.poster_path || '';
-  const { id, title, overview } = movie;
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const openModal = (id: number) => {
     navigate(`?type=popular&id=${id}`);
   };
@@ -23,17 +25,25 @@ export default function Banner({ movie }: IBannerProps) {
       bgPhoto={makeImagePath(movieBackDropPath)}
       bgPoster={makeImagePath(moviePosterPath)}
     >
-      <Title>{title}</Title>
-      <Overview>{overview}</Overview>
-      <MoreButton onClick={() => openModal(id)}>
-        <IoIosInformationCircleOutline />
-        <span>상세 정보</span>
-      </MoreButton>
+      {isLoading ? (
+        <SkeletonBanner />
+      ) : isError || !movie ? (
+        <ErrorMessage>영화를 불러오는 중 오류가 발생했습니다.</ErrorMessage>
+      ) : (
+        <>
+          <Title>{movie.title}</Title>
+          <Overview>{movie.overview}</Overview>
+          <MoreButton onClick={() => openModal(movie.id)}>
+            <IoIosInformationCircleOutline />
+            <span>상세 정보</span>
+          </MoreButton>
+        </>
+      )}
     </BannerSection>
   );
 }
 
-const BannerSection = styled.section<{ bgPhoto: string; bgPoster: string }>`
+const BannerSection = styled.section<{ bgPhoto?: string; bgPoster?: string }>`
   height: 56.25vw;
   width: 100%;
   z-index: 0;
@@ -57,6 +67,12 @@ const BannerSection = styled.section<{ bgPhoto: string; bgPoster: string }>`
     background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
       url(${(props) => props.bgPoster});
   }
+`;
+
+const ErrorMessage = styled.div`
+  color: ${(props) => props.theme.red};
+  text-align: center;
+  font-size: 1.5rem;
 `;
 
 const Title = styled.h2`
@@ -103,6 +119,7 @@ const MoreButton = styled.button`
     font-size: 1.2rem;
   }
   transition: all 0.3s ease-in-out;
+
   @media (hover: hover) {
     &:hover {
       background-color: rgba(92, 88, 88, 0.6);

@@ -5,75 +5,56 @@ import MovieCard from './MovieCard';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useNavigate } from 'react-router-dom';
+import SkeletonSlider from './SkeletonLoader/SkeletonSlider';
+import { sliderSettings } from '../config/sliderSettings';
 
 interface IMovieSliderProps {
   title: string;
   movies: IMovie[];
   type: string;
+  isLoading: boolean;
+  isError: any;
 }
 
 export default function MovieSlider({
   title,
   movies,
   type,
+  isLoading,
+  isError,
 }: IMovieSliderProps) {
-  const settings = {
-    dots: false,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 6,
-    slidesToScroll: 6,
-    initialSlide: 0,
-    responsive: [
-      {
-        breakpoint: 1600,
-        settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
-        },
-      },
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-        },
-      },
-    ],
-  };
   const navigate = useNavigate();
 
   const openModal = (movieId: number) => {
-    navigate(`?type=${type ? `${type}` : ''}&id=${movieId}`);
+    navigate(`?type=${type}&id=${movieId}`);
   };
 
   return (
     <SliderWrapper>
       <Title>{title}</Title>
-      <Slider {...settings}>
-        {movies.map((movie) => (
-          <MovieCard
-            key={`${movie.id}`}
-            movie={movie}
-            type={type}
-            openModal={openModal}
-          />
-        ))}
-      </Slider>
+      {isLoading ? (
+        <SkeletonSlider />
+      ) : isError ? (
+        <ErrorMessage>영화를 불러오는 중 오류가 발생했습니다.</ErrorMessage>
+      ) : (
+        <Slider {...sliderSettings}>
+          {movies.map((movie) => (
+            <MovieCard
+              key={`${movie.id}`}
+              movie={movie}
+              type={type}
+              openModal={openModal}
+            />
+          ))}
+        </Slider>
+      )}
     </SliderWrapper>
   );
 }
 
 const Title = styled.h2`
   font-size: 1.4rem;
-
+  margin-bottom: 10px;
   @media (max-width: 1024px) {
     font-size: 1rem;
   }
@@ -81,7 +62,6 @@ const Title = styled.h2`
 
 const SliderWrapper = styled.section`
   width: 100%;
-  padding: 0 60px;
   top: -16vw;
   position: relative;
 
@@ -122,8 +102,6 @@ const SliderWrapper = styled.section`
   }
 
   @media (max-width: 1024px) {
-    padding: 0 40px;
-
     .slick-arrow {
       width: 40px;
     }
@@ -138,7 +116,6 @@ const SliderWrapper = styled.section`
   }
 
   @media (max-width: 480px) {
-    padding: 0 20px;
     overflow-x: hidden;
     .slick-arrow {
       width: 20px;
@@ -152,4 +129,14 @@ const SliderWrapper = styled.section`
       right: -20px;
     }
   }
+`;
+
+const ErrorMessage = styled.div`
+  color: ${(props) => props.theme.red};
+  text-align: center;
+  font-size: 1.2rem;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
