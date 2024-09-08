@@ -4,9 +4,7 @@ export default function SkeletonContents() {
   return (
     <MovieList>
       {[...Array(4)].map((_, index) => (
-        <>
-          <SkeletonCard key={index} delay={index * 0.1} />
-        </>
+        <SkeletonCard key={index} $delay={index * 0.1} />
       ))}
     </MovieList>
   );
@@ -40,12 +38,12 @@ const MovieList = styled.div`
   }
 `;
 
-const SkeletonCard = styled.div<{ delay: number }>`
+const SkeletonCard = styled.div<{ $delay: number }>`
   width: 100%;
   aspect-ratio: 2 / 3;
   background-color: #333;
   position: relative;
   border-radius: 5px;
   animation: ${pulse} 1.2s infinite ease-in-out;
-  animation-delay: ${({ delay }) => `${delay}s`};
+  animation-delay: ${({ $delay }) => $delay}s;
 `;

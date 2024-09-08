@@ -109,8 +109,3 @@ const Button = styled.button`
   color: white;
   font-size: 20px;
 `;
-
-const CloseButton = styled.button`
-  color: white;
-  font-size: 20px;
-`;

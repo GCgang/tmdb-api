@@ -23,7 +23,7 @@ export default function MovieModal() {
 
   useEffect(() => {
     setIsModalOpen(id ? true : false);
-  }, [location]);
+  }, [location, id, setIsModalOpen]);
 
   useEffect(() => {
     if (isModalOpen) {

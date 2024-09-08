@@ -6,8 +6,8 @@ export default function SkeletonSlider() {
   return (
     <Slider {...sliderSettings}>
       {[...Array(sliderSettings.slidesToShow)].map((_, index) => (
-        <SkeletonCardWrapper>
-          <SkeletonCard key={index} />
+        <SkeletonCardWrapper key={index}>
+          <SkeletonCard />
         </SkeletonCardWrapper>
       ))}
     </Slider>

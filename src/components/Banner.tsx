@@ -12,9 +12,6 @@ interface IBannerProps {
 }
 
 export default function Banner({ movie, isLoading, isError }: IBannerProps) {
-  const movieBackDropPath = movie?.backdrop_path || '';
-  const moviePosterPath = movie?.poster_path || '';
-
   const navigate = useNavigate();
   const openModal = (id: number) => {
     navigate(`?type=popular&id=${id}`);
@@ -22,8 +19,8 @@ export default function Banner({ movie, isLoading, isError }: IBannerProps) {
 
   return (
     <BannerSection
-      bgPhoto={makeImagePath(movieBackDropPath)}
-      bgPoster={makeImagePath(moviePosterPath)}
+      $bgPhoto={makeImagePath(movie?.backdrop_path)}
+      $bgPoster={makeImagePath(movie?.poster_path)}
     >
       {isLoading ? (
         <SkeletonBanner />
@@ -43,7 +40,7 @@ export default function Banner({ movie, isLoading, isError }: IBannerProps) {
   );
 }
 
-const BannerSection = styled.section<{ bgPhoto?: string; bgPoster?: string }>`
+const BannerSection = styled.section<{ $bgPhoto: string; $bgPoster?: string }>`
   height: 56.25vw;
   width: 100%;
   z-index: 0;
@@ -52,7 +49,7 @@ const BannerSection = styled.section<{ bgPhoto?: string; bgPoster?: string }>`
   flex-direction: column;
   justify-content: center;
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
-    url(${(props) => props.bgPhoto});
+    url(${(props) => props.$bgPhoto});
   background-size: cover;
 
   @media (max-width: 1024px) {
@@ -65,7 +62,7 @@ const BannerSection = styled.section<{ bgPhoto?: string; bgPoster?: string }>`
     padding: 0 20px;
     align-items: center;
     background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
-      url(${(props) => props.bgPoster});
+      url(${(props) => props.$bgPoster});
   }
 `;
 

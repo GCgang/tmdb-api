@@ -15,7 +15,7 @@ export default function MovieCard({ movie, type, openModal }: IMovieCardProps) {
   return (
     <Card>
       <Thumbnail
-        bgPhoto={makeImagePath(backdrop_path)}
+        $bgPhoto={makeImagePath(backdrop_path)}
         variants={cardVariants}
         onClick={() => openModal(id)}
         whileHover='hover'
@@ -58,11 +58,11 @@ const cardVariants = {
   },
 };
 
-const Thumbnail = styled(motion.div)<{ bgPhoto: string }>`
+const Thumbnail = styled(motion.div)<{ $bgPhoto: string }>`
   cursor: pointer;
   width: 100%;
   padding-top: 56.25%;
-  background-image: url(${({ bgPhoto }) => bgPhoto});
+  background-image: url(${({ $bgPhoto }) => $bgPhoto});
   background-size: contain;
   background-repeat: no-repeat;
   position: relative;

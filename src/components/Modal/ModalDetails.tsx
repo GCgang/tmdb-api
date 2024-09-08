@@ -35,7 +35,7 @@ export default function ModalDetails({ id }: { id: number }) {
   return (
     <>
       <ModalCover
-        src={makeImagePath(movieDetails?.poster_path!)}
+        src={makeImagePath(movieDetails?.poster_path)}
         alt={movieDetails?.title}
       />
       <TitleBar>

@@ -44,8 +44,8 @@ export default function ModalContents({ id }: { id: number }) {
         {similarMovies?.slice(0, index).map((similarMovie) => (
           <SimilarContent key={similarMovie?.id}>
             <SimilarPoster
-              bgPoster={makeImagePath(similarMovie?.poster_path)}
-            ></SimilarPoster>
+              $bgPoster={makeImagePath(similarMovie?.poster_path)}
+            />
             <Info>
               <ReleaseDate>{similarMovie?.release_date}</ReleaseDate>
               <WishButton>
@@ -93,10 +93,10 @@ const SimilarContents = styled.div`
 
 const SimilarContent = styled.div``;
 
-const SimilarPoster = styled.div<{ bgPoster: string }>`
+const SimilarPoster = styled.div<{ $bgPoster: string }>`
   width: 100%;
   aspect-ratio: 2 / 3;
-  background-image: url(${(props) => props.bgPoster});
+  background-image: url(${(props) => props.$bgPoster});
   background-size: cover;
   background-repeat: no-repeat;
   border-radius: 5px;

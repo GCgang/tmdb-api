@@ -4,7 +4,7 @@ export default function SkeletonMovieList() {
   return (
     <MovieList>
       {[...Array(5)].map((_, index) => (
-        <SkeletonCard key={index} delay={index * 0.1} />
+        <SkeletonCard key={index} $delay={index * 0.1} />
       ))}
     </MovieList>
   );
@@ -48,7 +48,7 @@ const MovieList = styled.div`
   }
 `;
 
-const SkeletonCard = styled.div<{ delay: number }>`
+const SkeletonCard = styled.div<{ $delay: number }>`
   cursor: pointer;
   width: 100%;
   padding-top: 56.25%;
@@ -56,5 +56,5 @@ const SkeletonCard = styled.div<{ delay: number }>`
   position: relative;
   border-radius: 4px;
   animation: ${pulse} 1.2s infinite ease-in-out;
-  animation-delay: ${({ delay }) => `${delay}s`};
+  animation-delay: ${({ $delay }) => $delay}s;
 `;
