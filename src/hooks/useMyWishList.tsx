@@ -1,6 +1,6 @@
 import { useRecoilState } from 'recoil';
 import { myMovieWishList } from '../atom';
-import { toast, Bounce } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 export default function useMyWishList() {
   const [myMovies, setMyMovies] = useRecoilState<number[]>(myMovieWishList);

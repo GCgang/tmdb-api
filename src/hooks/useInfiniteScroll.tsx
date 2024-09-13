@@ -49,7 +49,7 @@ export function useInfiniteScroll<T>(
         observerRef.current.unobserve(currentElement);
       }
     };
-  }, [isFetchingNextPage, hasNextPage]);
+  }, [isFetchingNextPage, hasNextPage, fetchNextPage]);
 
   return { data, lastElementRef, isLoading, error, isFetchingNextPage };
 }

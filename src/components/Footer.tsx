@@ -6,17 +6,29 @@ export default function Footer() {
     <Wrapper>
       <SocialLinks>
         <SocialLink>
-          <a href='https://www.facebook.com/NetflixKR' target='_blank'>
+          <a
+            href='https://www.facebook.com/NetflixKR'
+            target='_blank'
+            rel='noreferrer'
+          >
             <FaFacebookF />
           </a>
         </SocialLink>
         <SocialLink>
-          <a href='https://www.instagram.com/netflixkr/' target='_blank'>
+          <a
+            href='https://www.instagram.com/netflixkr/'
+            target='_blank'
+            rel='noreferrer'
+          >
             <FaInstagram />
           </a>
         </SocialLink>
         <SocialLink>
-          <a href='https://twitter.com/netflixkr' target='_blank'>
+          <a
+            href='https://twitter.com/netflixkr'
+            target='_blank'
+            rel='noreferrer'
+          >
             <FaTwitter />
           </a>
         </SocialLink>
@@ -24,6 +36,7 @@ export default function Footer() {
           <a
             href='https://www.youtube.com/channel/UCiEEF51uRAeZeCo8CJFhGWw/featured'
             target='_blank'
+            rel='noreferrer'
           >
             <FaYoutube />
           </a>

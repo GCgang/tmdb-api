@@ -1,15 +1,15 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
-const BASE_URL = 'https://api.themoviedb.org/3';
-const TOKEN =
-  'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkMWZlMjkwMzQ0MTY0ZTVhNWJlY2UwNjE1YmQyZDcyYSIsIm5iZiI6MTcyMTIxMzU3NC44NTg4MjgsInN1YiI6IjY2OTc5OTZiZjA1ZWMxYTU1N2FhZWFmYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vzdorqNPoEjahgBKLZxvGdlp427D_GNDd-PshH34088';
 export default class TmdbClient {
   private httpClient: AxiosInstance;
 
   constructor() {
     this.httpClient = axios.create({
-      baseURL: BASE_URL,
-      headers: { Accept: 'application/json', Authorization: `Bearer ${TOKEN}` },
+      baseURL: process.env.REACT_APP_BASE_URL,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${process.env.REACT_APP_TOKEN}`,
+      },
     });
   }
 
