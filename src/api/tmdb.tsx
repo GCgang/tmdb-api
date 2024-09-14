@@ -21,8 +21,8 @@ export default class Tmdb {
     return response.data.results;
   }
 
-  async NowPlaying() {
-    const response = await this.apiClient.NowPlaying();
+  async nowPlaying() {
+    const response = await this.apiClient.nowPlaying();
     return response.data.results;
   }
 

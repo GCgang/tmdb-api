@@ -31,7 +31,7 @@ export default class TmdbClient {
     });
   }
 
-  async NowPlaying(): Promise<AxiosResponse> {
+  async nowPlaying(): Promise<AxiosResponse> {
     return this.httpClient.get('/movie/now_playing', {
       params: { language: 'ko', page: 1 },
     });

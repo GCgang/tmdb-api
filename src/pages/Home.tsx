@@ -1,49 +1,29 @@
-import { useQuery } from '@tanstack/react-query';
-import { useTmdbApi } from '../context/TmdbApiContext';
 import MovieSlider from '../components/MovieSlider';
-import { IMovie } from '../api/types';
 import Banner from '../components/Banner';
 import styled from 'styled-components';
+import { useMovies } from '../hooks/useMovies';
 
 export default function Home() {
-  const { tmdb } = useTmdbApi();
-
   const {
     data: popularMovies,
     isLoading: isLoadingPopular,
     isError: isErrorPopular,
-  } = useQuery<IMovie[]>({
-    queryKey: ['popular'],
-    queryFn: () => tmdb.popular(),
-  });
-
+  } = useMovies('popular');
   const {
     data: topRatedMovies,
     isLoading: isLoadingTopRated,
     isError: isErrorTopRated,
-  } = useQuery<IMovie[]>({
-    queryKey: ['topRated'],
-    queryFn: () => tmdb.topRated(),
-  });
-
+  } = useMovies('topRated');
   const {
     data: nowPlayingMovies,
     isLoading: isLoadingNowPlaying,
     isError: isErrorNowPlaying,
-  } = useQuery<IMovie[]>({
-    queryKey: ['nowPlaying'],
-    queryFn: () => tmdb.NowPlaying(),
-  });
-
+  } = useMovies('nowPlaying');
   const {
     data: upCommingMovies,
     isLoading: isLoadingUpComming,
     isError: isErrorUpComming,
-  } = useQuery<IMovie[]>({
-    queryKey: ['upComming'],
-    queryFn: () => tmdb.upComming(),
-  });
-
+  } = useMovies('upComming');
   return (
     <>
       <Banner
