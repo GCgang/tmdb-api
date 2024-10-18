@@ -15,7 +15,7 @@ export default function MovieCard({ movie, type, openModal }: IMovieCardProps) {
   return (
     <Card>
       <Thumbnail
-        $bgPhoto={makeImagePath(backdrop_path)}
+        $bgPhoto={makeImagePath(backdrop_path, 'backdrop')}
         variants={cardVariants}
         onClick={() => openModal(id)}
         whileHover='hover'

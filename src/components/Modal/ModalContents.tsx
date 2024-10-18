@@ -44,7 +44,7 @@ export default function ModalContents({ id }: { id: number }) {
         {similarMovies?.slice(0, index).map((similarMovie) => (
           <SimilarContent key={similarMovie?.id}>
             <SimilarPoster
-              $bgPoster={makeImagePath(similarMovie?.poster_path)}
+              $bgPoster={makeImagePath(similarMovie?.poster_path, 'poster')}
             />
             <Info>
               <ReleaseDate>{similarMovie?.release_date}</ReleaseDate>

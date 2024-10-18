@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { useMovies } from '../hooks/useMovies';
 
 export default function Home() {
+  console.log(process.env.REACT_APP_BASE_URL);
+  console.log(process.env.REACT_APP_TOKEN);
   const {
     data: popularMovies,
     isLoading: isLoadingPopular,

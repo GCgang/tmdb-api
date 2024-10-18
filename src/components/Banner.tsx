@@ -19,8 +19,8 @@ export default function Banner({ movie, isLoading, isError }: IBannerProps) {
 
   return (
     <BannerSection
-      $bgPhoto={makeImagePath(movie?.backdrop_path)}
-      $bgPoster={makeImagePath(movie?.poster_path)}
+      $bgPhoto={makeImagePath(movie?.backdrop_path, 'backdrop')}
+      $bgPoster={makeImagePath(movie?.poster_path, 'poster')}
     >
       {isLoading ? (
         <SkeletonBanner />
